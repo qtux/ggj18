@@ -23,4 +23,4 @@ Some links, probably to the Jam page and Youtube.
 License
 -------
 
-This project is licensed under The MIT License.
+This project is licensed under The zlib/libpng License (Zlib).
