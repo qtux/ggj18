@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <tmxlite/Map.hpp>
+#include "MapLayer.hpp"
 
 enum class GameStates {
 	GAME_STATE_LEVEL = 0,
@@ -7,6 +9,12 @@ enum class GameStates {
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1024, 768), "Gamename", sf::Style::Default);
+	
+	// test tmxlite
+	tmx::Map map;
+	map.load("assets/levels/level1.tmx");
+	MapLayer layerZero(map, 0);
+	
 	GameStates gameState = GameStates::GAME_STATE_LEVEL;
 	while (window.isOpen()) {
 		sf::Event event;
@@ -23,6 +31,7 @@ int main() {
 			case GameStates::GAME_STATE_LEVEL:
 				// functions
 				//window.draw(...);
+				window.draw(layerZero);
 				break;
 		}
 		window.display();
