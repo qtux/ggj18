@@ -6,7 +6,8 @@ set(main_target "run")
 cmake_minimum_required(VERSION 3.5)
 
 file(GLOB_RECURSE sources src/*.cpp)
-add_executable(${main_target} ${sources})
+file(GLOB_RECURSE tmxlite tmxlite/tmxlite/src/*.cpp tmxlite/tmxlite/src/miniz.c)
+add_executable(${main_target} ${sources} ${tmxlite})
 
 # force C++14 standard and disable custom standard library extensions
 set_target_properties(${main_target} PROPERTIES
@@ -22,7 +23,12 @@ target_compile_options(${main_target} PRIVATE
 	-Wextra
 )
 
-# find and link SFML
+# find SFML
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 find_package(SFML 2.3 REQUIRED audio graphics window system)
-target_link_libraries(${main_target} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
-target_include_directories(${main_target} PRIVATE ${SFML_INCLUDE_DIR})
+
+# include SFML and tmxlite
+target_include_directories(${main_target} PRIVATE ${SFML_INCLUDE_DIR} tmxlite/tmxlite/include)
+
+# link executable to SFML
+target_link_libraries(${main_target} ${SFML_LIBRARIES})
