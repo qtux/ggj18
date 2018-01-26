@@ -28,7 +28,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 find_package(SFML 2.3 REQUIRED audio graphics window system)
 
 # include SFML and tmxlite
-target_include_directories(${main_target} PRIVATE ${SFML_INCLUDE_DIR} tmxlite/tmxlite/include)
+target_include_directories(${main_target} PRIVATE ${SFML_INCLUDE_DIR} tmxlite/tmxlite/include tmxlite/tmxlite/include/tmxlite/detail)
 
 # link executable to SFML
 target_link_libraries(${main_target} ${SFML_LIBRARIES})
