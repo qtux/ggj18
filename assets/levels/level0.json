@@ -20,7 +20,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"..\/..\/raw_assets\/levels\/level.tsx"
+         "source":"level.tsx"
         }],
  "tilewidth":64,
  "type":"map",
