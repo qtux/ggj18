@@ -1,0 +1,3 @@
+[submodule "tmxlite"]
+	path = tmxlite
+	url = ../../fallahn/tmxlite.git
