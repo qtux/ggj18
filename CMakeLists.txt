@@ -23,6 +23,6 @@ target_compile_options(${main_target} PRIVATE
 )
 
 # find and link SFML
-find_package(SFML 2.4 REQUIRED audio graphics window system)
+find_package(SFML 2.3 REQUIRED audio graphics window system)
 target_link_libraries(${main_target} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 target_include_directories(${main_target} PRIVATE ${SFML_INCLUDE_DIR})
