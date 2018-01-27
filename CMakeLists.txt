@@ -24,6 +24,7 @@ target_compile_options(${main_target} PRIVATE
 )
 
 # find SFML
+# Ubuntu-specific fix:
 set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH} /usr/share/SFML/cmake/Modules/)
 find_package(SFML 2.3 REQUIRED audio graphics window system)
 
