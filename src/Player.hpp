@@ -19,7 +19,7 @@ public:
 	void ActionTrigger(PlayerState triggeredAction);
 	void ActionSwap(PlayerState swappedAction);
 	void update();
-	//~Player();
+	~Player();
 };
 
 const static int none[] = {0};

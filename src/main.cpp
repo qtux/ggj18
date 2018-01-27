@@ -15,6 +15,8 @@ enum class GameStates {
 };
 
 int main() {
+	bool useKeyboard = !sf::Joystick::isConnected(1); // use keyboard for second player if not two joysticks (=gamepads) are connected
+	
 	sf::RenderWindow window(sf::VideoMode(1024, 768), "SkillSwitch", sf::Style::Default);
 	sf::View myView = window.getDefaultView();
 	window.setView(myView);
@@ -36,7 +38,7 @@ int main() {
 	//myView.zoom(1280./768.);
 	myView.setSize(1707,1280);//1707 = aspect ratio * 1280
 	
-	Player PlayerTop(world), PlayerBottom(world);
+	Player playerTop(world), playerBottom(world);
 	
 	// clock to determine fixed logic rate
 	sf::Clock clock;
@@ -54,6 +56,34 @@ int main() {
 			if (event.type == sf::Event::EventType::KeyPressed || event.type == sf::Event::EventType::MouseButtonPressed) {
 				switched = true;
 				++i;
+			}
+			if (event.type == sf::Event::JoystickButtonPressed)
+			{
+				bool toggleSwitch = false;
+				unsigned int joystickId = event.joystickButton.joystickId;
+				unsigned int joystickButton = event.joystickButton.button;
+				std::cout<<"joystick id: "<<joystickId<<", button: "<<joystickButton<<std::endl;
+				//if (sf::Joystick::isButtonPressed(joystickId, 5)) // RB button
+				if (sf::Joystick::getAxisPosition(joystickId, sf::Joystick::R)>60.)
+				{
+					toggleSwitch = true;
+				}
+				if (joystickId == 0)
+				{
+					if (toggleSwitch)
+						playerTop.ActionSwap(PlayerState::NONE);
+					else
+					playerTop.ActionTrigger(PlayerState::NONE);
+				}
+			}
+			
+			if (event.type == sf::Event::JoystickMoved)
+			{
+				if (event.joystickMove.axis == sf::Joystick::Axis::R){
+					std::cout << "axis moved: " <<event.joystickMove.axis<< std::endl;
+					std::cout << "joystick id: " << event.joystickMove.joystickId << std::endl;
+					std::cout << "new position: " << event.joystickMove.position << std::endl;
+}
 			}
 		}
 		window.clear(sf::Color::Black);

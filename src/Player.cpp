@@ -4,7 +4,11 @@ Player::Player(b2World& world): Entity("assets/sprites/dodo.png", sf::IntRect(0,
 	state = PlayerState::NONE;
 }
 
-//Player::~Player(){}
+void Player::ActionSwap(PlayerState myState){};
+
+void Player::ActionTrigger(PlayerState myState){};
+
+Player::~Player(){}
 
 void Player::update() {
 	switch(state) {
