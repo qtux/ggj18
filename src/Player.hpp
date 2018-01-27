@@ -17,6 +17,9 @@ class Player
 	b2Body* myPhysicsBody;
 	PlayerState myState;
 	
+	/// creates box2d objects for player
+	void initiatePhysics(b2World* myWorld); 
+	
 	public: 
 	
 	Player();
