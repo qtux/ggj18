@@ -4,6 +4,7 @@
 #include <Box2D/Box2D.h>
 #include <string>
 #include <iostream>
+#include "Settings.hpp"
 
 #include "Player.hpp"
 #include "Entity.hpp"
@@ -124,8 +125,8 @@ int main() {
 				case GameStates::GAME_STATE_LEVEL:
 					// functions
 					world.Step(deltaT.asSeconds(), 8, 3);
-					tweet.update();
-					myView.setCenter(myView.getCenter().x + 6 * deltaT.asSeconds(), 1280./2);
+					tweet.update(deltaT.asSeconds());
+					myView.setCenter(myView.getCenter().x + Settings::instance()->getFloatSetting("LevelSpeed") * deltaT.asSeconds(), 1280./2);
 					break;
 			}
 		}
