@@ -31,16 +31,20 @@ find_package(SFML 2.3 REQUIRED audio graphics window system)
 # find Box2D
 find_package(Box2D)
 
+find_package(Lua 5.1 REQUIRED)
+
 # include SFML and tmxlite
 target_include_directories(${main_target} PRIVATE
 	${SFML_INCLUDE_DIR}
 	${BOX2D_INCLUDE_DIR}
+	${LUA_INCLUDE_DIR}
 	tmxlite/tmxlite/include tmxlite/tmxlite/include/tmxlite/detail
+	sol2/single/sol
 	sources
 )
 
 # link executable to SFML
-target_link_libraries(${main_target} ${SFML_LIBRARIES} ${BOX2D_LIBRARIES})
+target_link_libraries(${main_target} ${SFML_LIBRARIES} ${BOX2D_LIBRARIES} ${LUA_LIBRARIES})
 
 
 
