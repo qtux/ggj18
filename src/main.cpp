@@ -77,12 +77,13 @@ int main() {
 	//myView.zoom(1280./768.);
 	myView.setSize(1707,1280);//1707 = aspect ratio * 1280
 	
+	
+	// clock to determine fixed logic rate
+	sf::Clock clock;
+	float timeStep = 1.0f / 60.0f;
 	//start game
-	float posx = 0;
 	GameStates gameState = GameStates::GAME_STATE_LEVEL;
 	while (window.isOpen()) {
-		posx+=.1;
-		myView.setCenter(int(posx),1280./2);
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed)
@@ -91,18 +92,29 @@ int main() {
 		window.clear(sf::Color::Black);
 		window.setView(myView);
 		
+		// fixed rate for logic functions
+		if (clock.getElapsedTime() > sf::seconds(timeStep)) {
+			// reset clock if more than a 1/60 seconds have passed
+			sf::Time deltaT = clock.restart();
+			switch(gameState) {
+				case GameStates::GAME_STATE_HELP:
+					// functions
+					break;
+				case GameStates::GAME_STATE_LEVEL:
+					// functions
+					world.Step(timeStep, 8, 3);
+					test.setPosition(body->GetPosition().x, body->GetPosition().y);
+					myView.setCenter(myView.getCenter().x + 10, 1280./2);
+					break;
+			}
+		}
+		// draw as often as possible
 		switch(gameState) {
 			case GameStates::GAME_STATE_HELP:
-				// functions
-				//window.draw(...);
 				break;
 			case GameStates::GAME_STATE_LEVEL:
-				// functions
-				//window.draw(...);
 				window.draw(layerZero);
 				window.draw(test);
-				world.Step(1/60.f, 8, 3);
-				test.setPosition(body->GetPosition().x, body->GetPosition().y);
 				break;
 		}
 		//myView.display();
