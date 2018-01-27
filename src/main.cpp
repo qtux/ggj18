@@ -23,8 +23,9 @@ int main() {
 	
 	// test tmxlite
 	tmx::Map map;
-	map.load("assets/levels/level1.tmx");
+	map.load("assets/levels/level0.tmx");
 	MapLayer layerZero(map, 0);
+	MapLayer bg(map, 1);
 	
 	// test Box2D
 	b2Vec2 gravity(0.f, 9.8f);
@@ -38,7 +39,7 @@ int main() {
 	//myView.zoom(1280./768.);
 	myView.setSize(1707,1280);//1707 = aspect ratio * 1280
 	
-	Player playerTop(world), playerBottom(world);
+	//Player PlayerTop(world), PlayerBottom(world);
 	
 	// clock to determine fixed logic rate
 	sf::Clock clock;
@@ -138,6 +139,7 @@ int main() {
 			}
 			case GameStates::GAME_STATE_LEVEL: {
 				window.draw(layerZero);
+				window.draw(bg);
 				window.draw(tweet);
 				break;
 			}
