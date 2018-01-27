@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <tmxlite/Map.hpp>
 #include "MapLayer.hpp"
+#include <Box2D/Box2D.h>
 
 enum class GameStates {
 	GAME_STATE_LEVEL = 0,
@@ -14,6 +15,24 @@ int main() {
 	tmx::Map map;
 	map.load("assets/levels/level1.tmx");
 	MapLayer layerZero(map, 0);
+	
+	// test sprite
+	sf::Texture texture;
+	texture.loadFromFile("assets/sprites/level.png");
+	sf::Sprite test;
+	test.setTexture(texture);
+	test.setTextureRect(sf::IntRect(10, 10, 50, 30));
+	test.setColor(sf::Color(255, 255, 255, 200));
+	test.setPosition(100, 25);
+	
+	// test Box2D
+	b2Vec2 gravity(0.f, 9.8f);
+	b2World world(gravity);
+	
+	b2BodyDef bodyDef;
+	bodyDef.position = b2Vec2(100, 25);
+	bodyDef.type = b2_dynamicBody;
+	b2Body* body = world.CreateBody(&bodyDef);
 	
 	GameStates gameState = GameStates::GAME_STATE_LEVEL;
 	while (window.isOpen()) {
@@ -32,6 +51,9 @@ int main() {
 				// functions
 				//window.draw(...);
 				window.draw(layerZero);
+				window.draw(test);
+				world.Step(1/60.f, 8, 3);
+				test.setPosition(body->GetPosition().x, body->GetPosition().y);
 				break;
 		}
 		window.display();
