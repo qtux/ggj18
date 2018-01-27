@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "Player.hpp"
+#include "Entity.hpp"
 #include "CollisionLayer.hpp"
 
 enum class GameStates {
@@ -23,32 +24,11 @@ int main() {
 	map.load("assets/levels/level1.tmx");
 	MapLayer layerZero(map, 0);
 	
-	// test sprite
-	sf::Texture texture;
-	texture.loadFromFile("assets/sprites/level.png");
-	sf::Sprite test;
-	test.setTexture(texture);
-	test.setTextureRect(sf::IntRect(10, 10, 50, 30));
-	test.setColor(sf::Color(255, 255, 255, 200));
-	test.setPosition(100, 25);
-	
 	// test Box2D
 	b2Vec2 gravity(0.f, 9.8f);
 	b2World world(gravity);
 	CollisionLayer collision_layer(map, world);
-	
-	b2BodyDef bodyDef;
-	bodyDef.position = b2Vec2(100, 25);
-	bodyDef.type = b2_dynamicBody;
-	b2Body* body = world.CreateBody(&bodyDef);
-	
-	b2PolygonShape shape;
-	shape.SetAsBox(32, 32);
-	b2FixtureDef fixtureDef;
-	fixtureDef.density = 1.f;
-	fixtureDef.friction = 0.7f;
-	fixtureDef.shape = &shape;
-	body->CreateFixture(&fixtureDef);
+	Entity test("assets/sprites/level.png", sf::IntRect(10, 10, 50, 30), {100, 25}, {32, 32}, world);
 	
 	// the game view (full window)
 	//myView.setViewport(sf::FloatRect(0, 0, , 768./1280.));
@@ -111,7 +91,7 @@ int main() {
 				case GameStates::GAME_STATE_LEVEL:
 					// functions
 					world.Step(deltaT.asSeconds(), 8, 3);
-					test.setPosition(body->GetPosition().x, body->GetPosition().y);
+					test.update();
 					myView.setCenter(myView.getCenter().x + 600 * deltaT.asSeconds(), 1280./2);
 					break;
 			}
