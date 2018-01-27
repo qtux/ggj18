@@ -14,7 +14,7 @@ enum class GameStates {
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1024, 768), "SkillSwitch", sf::Style::Default);
-	sf::View myView(sf::FloatRect(0,0,1024,768));
+	sf::View myView = window.getDefaultView();
 	window.setView(myView);
 	
 	// test tmxlite
@@ -72,12 +72,17 @@ int main() {
 	}
 	window.setView(window.getDefaultView());
 	
+	// the game view (full window)
+//myView.setViewport(sf::FloatRect(0, 0, , 768./1280.));
+	//myView.zoom(1280./768.);
+	myView.setSize(1707,1280);//1707 = aspect ratio * 1280
+	
 	//start game
 	float posx = 0;
 	GameStates gameState = GameStates::GAME_STATE_LEVEL;
 	while (window.isOpen()) {
 		posx+=.1;
-		myView.setCenter(int(posx),768/2);
+		myView.setCenter(int(posx),1280./2);
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed)
