@@ -40,7 +40,8 @@ target_include_directories(${main_target} PRIVATE
 	${LUA_INCLUDE_DIR}
 	tmxlite/tmxlite/include tmxlite/tmxlite/include/tmxlite/detail
 	sol2/single/sol
-	sources
+	src
+	src/GameStates
 )
 
 # link executable to SFML

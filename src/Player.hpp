@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Box2D/Box2D.h>
+#include <utility>
 #include "Entity.hpp"
 
 enum class PlayerState{
@@ -14,7 +14,9 @@ enum class PlayerState{
 class Player: public Entity {
 private:
 	PlayerState state;
-	static std::map<PlayerState, std::vector<int>> animationMap;
+	static std::map<PlayerState, std::pair<std::vector<int>, std::vector<float>>> animationMap;
+	int animationIndex;
+	int animationCounter;
 public:
 	Player(b2World& world);
 	void ActionTrigger(PlayerState triggeredAction);
@@ -24,3 +26,4 @@ public:
 };
 
 const static int scaleFactor = 4;
+const static int baseSpeed = 400;
