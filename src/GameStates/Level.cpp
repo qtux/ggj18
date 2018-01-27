@@ -83,6 +83,8 @@ void Level::processEvent(sf::Event& event) {
 void Level::logic(const sf::Time deltaT) {
 	world.Step(deltaT.asSeconds(), 8, 3);
 	myView.setCenter(myView.getCenter().x + Settings::instance()->getProperty<float>("level_speed") * deltaT.asSeconds(), 1280./2);
+	playerTop->update(deltaT.asSeconds());
+	playerBottom->update(deltaT.asSeconds());
 }
 
 void Level::draw() {
