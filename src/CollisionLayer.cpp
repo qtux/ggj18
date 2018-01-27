@@ -40,9 +40,9 @@ b2PolygonShape CollisionLayer::createShape(const tmx::Object& obj) {
 			);
 			return shape;
 		}
-		
 		case tmx::Object::Shape::Polygon: {
-			auto points = obj.getPoints();
+			// deactivate erroneous code
+			/*auto points = obj.getPoints();
 			auto pos = obj.getPosition();
 			b2PolygonShape shape;
 			std::vector<b2Vec2> b2points;
@@ -51,7 +51,8 @@ b2PolygonShape CollisionLayer::createShape(const tmx::Object& obj) {
 				b2points.push_back(b2Vec2(pos.x + point.x, pos.y + point.y));
 			}
 			shape.Set(b2points.data(), b2points.size());
-			return shape;
+			return shape;*/
+			break;
 		}
 		default: {
 			break;
