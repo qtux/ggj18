@@ -24,7 +24,7 @@ target_compile_options(${main_target} PRIVATE
 )
 
 # find SFML
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH} /usr/share/SFML/cmake/Modules/)
 find_package(SFML 2.3 REQUIRED audio graphics window system)
 
 # include SFML and tmxlite
@@ -32,3 +32,6 @@ target_include_directories(${main_target} PRIVATE ${SFML_INCLUDE_DIR} tmxlite/tm
 
 # link executable to SFML
 target_link_libraries(${main_target} ${SFML_LIBRARIES})
+
+
+
