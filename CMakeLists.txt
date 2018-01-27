@@ -36,6 +36,7 @@ target_include_directories(${main_target} PRIVATE
 	${SFML_INCLUDE_DIR}
 	${BOX2D_INCLUDE_DIR}
 	tmxlite/tmxlite/include tmxlite/tmxlite/include/tmxlite/detail
+	sources
 )
 
 # link executable to SFML
