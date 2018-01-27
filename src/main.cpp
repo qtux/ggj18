@@ -2,6 +2,7 @@
 #include <tmxlite/Map.hpp>
 #include "MapLayer.hpp"
 #include <Box2D/Box2D.h>
+#include <string>
 #include <iostream>
 
 #include "Player.hpp"
@@ -15,7 +16,6 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(1024, 768), "SkillSwitch", sf::Style::Default);
 	sf::View myView(sf::FloatRect(0,0,1024,768));
 	window.setView(myView);
-	
 	
 	// test tmxlite
 	tmx::Map map;
@@ -48,8 +48,32 @@ int main() {
 	fixtureDef.shape = &shape;
 	body->CreateFixture(&fixtureDef);
 	
-	float posx = 0;
+	// show intro
+	int i = 0;
+	while (window.isOpen()) {
+		sf::Event event;
+		while (window.pollEvent(event)) {
+			if (event.type == sf::Event::Closed)
+				window.close();
+			if (event.type == sf::Event::EventType::KeyPressed || event.type == sf::Event::EventType::MouseButtonPressed)
+				++i;
+		}
+		window.clear(sf::Color::Black);
+		sf::Texture img;
+		if(i >= 2 || img.loadFromFile("assets/intro/intro_" + std::to_string(i) + ".png") != true) {
+			break;
+		}
+		sf::Sprite sprite(img);
+		myView.setSize(img.getSize().x, img.getSize().y);
+		myView.setCenter(img.getSize().x/2, img.getSize().y/2);
+		window.setView(myView);
+		window.draw(sprite);
+		window.display();
+	}
+	window.setView(window.getDefaultView());
 	
+	//start game
+	float posx = 0;
 	GameStates gameState = GameStates::GAME_STATE_LEVEL;
 	while (window.isOpen()) {
 		posx+=.1;
