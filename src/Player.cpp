@@ -13,9 +13,9 @@ std::map<PlayerState, std::pair<std::vector<int>, std::vector<float>>> Player::a
 
 Player::Player(b2World& world): Entity("assets/sprites/dodo.png", sf::IntRect(0, 0, 64, 64), {100, 100}, {64*scaleFactor, 64*scaleFactor}, world) {
 	state = PlayerState::NONE;
-	body->SetLinearVelocity( b2Vec2(Settings::instance()->getFloatSetting("LevelSpeed"),0));
 	animationIndex = 0;
 	animationCounter = 0;
+	body->SetLinearVelocity( b2Vec2(Settings::instance()->getProperty<float>("level_speed"),0));
 }
 
 void Player::ActionSwap(PlayerState myState){}

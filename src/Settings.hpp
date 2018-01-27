@@ -24,6 +24,9 @@
 
 
 
+#include <sol.hpp>
+#include <iostream>
+
 
 /* Verwendung */
 class Settings : public Singleton <Settings>
@@ -31,8 +34,13 @@ class Settings : public Singleton <Settings>
 	friend class Singleton <Settings>;
 	public:
 		~Settings () { }
-		int getIntSetting (std::string name) { }
-		float getFloatSetting (std::string name) { if (name=="LevelSpeed") return 20.; }
+		template <typename T> T getProperty(std::string propName){return lua.get<T>(propName);}
 	protected:
-		Settings () { }
+		Settings () { 
+				lua.script_file("assets/scripts/config.lua");
+				std::cout << lua.get<std::string>("name") << std::endl;
+			}
+	
+	private:
+		sol::state lua;
 };

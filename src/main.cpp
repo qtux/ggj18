@@ -10,7 +10,7 @@
 #include "Entity.hpp"
 #include "CollisionLayer.hpp"
 
-#include <sol.hpp>
+
 
 enum class GameStates {
 	GAME_STATE_INTRO = 0,
@@ -18,14 +18,12 @@ enum class GameStates {
 };
 
 int main() {
-	sol::state lua;
-	lua.script_file("assets/scripts/config.lua");
-	std::cout << lua.get<std::string>("name") << std::endl;
+
 
 	bool useKeyboard = !sf::Joystick::isConnected(1); // use keyboard for second player if not two joysticks (=gamepads) are connected
 	
 	//sf::RenderWindow window(sf::VideoMode(lua.get<int>("screen_width"), lua.get<int>("screen_height")), lua.get<std::string>("name"), sf::Style::Default);
-	sf::RenderWindow window(sf::VideoMode(lua.get<int>("screen_width"), lua.get<int>("screen_height")), lua.get<std::string>("name"), sf::Style::Default);
+	sf::RenderWindow window(sf::VideoMode(Settings::instance()->getProperty<int>("screen_width"), Settings::instance()->getProperty<int>("screen_height")), Settings::instance()->getProperty<std::string>("name"), sf::Style::Default);
 	sf::View myView = window.getDefaultView();
 	window.setView(myView);
 	
@@ -133,7 +131,7 @@ int main() {
 					// functions
 					world.Step(deltaT.asSeconds(), 8, 3);
 					tweet.update(deltaT.asSeconds());
-					myView.setCenter(myView.getCenter().x + lua.get<float>("level_speed") * deltaT.asSeconds(), 1280./2);
+					myView.setCenter(myView.getCenter().x + Settings::instance()->getProperty<float>("level_speed") * deltaT.asSeconds(), 1280./2);
 					break;
 			}
 		}
