@@ -11,6 +11,7 @@ public:
 	void update();
 	void setTextureRect(sf::IntRect rect);
 private:
+	sf::Texture texture;
 	sf::IntRect texture_rect;
 	sf::RectangleShape shape;
 	sf::Vector2<float> position;

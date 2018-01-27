@@ -2,7 +2,6 @@
 
 Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<float> position, sf::Vector2<float> size, b2World& world) {
 	// load texture and create a shape
-	sf::Texture texture;
 	shape = sf::RectangleShape(size);
 	texture.loadFromFile(texture_file);
 	shape.setTexture(&texture);
@@ -31,7 +30,6 @@ void Entity::update() {
 }
 
 void Entity::draw(sf::RenderTarget& renderTarget, sf::RenderStates states) const {
-
 	renderTarget.draw(shape, states);
 }
 
