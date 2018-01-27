@@ -2,6 +2,7 @@
 #include <tmxlite/Map.hpp>
 #include "MapLayer.hpp"
 #include <Box2D/Box2D.h>
+#include <string>
 
 #include "Player.hpp"
 
@@ -12,6 +13,7 @@ enum class GameStates {
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1024, 768), "SkillSwitch", sf::Style::Default);
+	sf::View view;
 	
 	// test tmxlite
 	tmx::Map map;
@@ -44,6 +46,31 @@ int main() {
 	fixtureDef.shape = &shape;
 	body->CreateFixture(&fixtureDef);
 	
+	// show intro
+	int i = 0;
+	while (window.isOpen()) {
+		sf::Event event;
+		while (window.pollEvent(event)) {
+			if (event.type == sf::Event::Closed)
+				window.close();
+			if (event.type == sf::Event::EventType::KeyPressed || event.type == sf::Event::EventType::MouseButtonPressed)
+				++i;
+		}
+		window.clear(sf::Color::Black);
+		sf::Texture img;
+		if(img.loadFromFile("assets/intro/intro_" + std::to_string(i) + ".png") != true) {
+			break;
+		}
+		sf::Sprite sprite(img);
+		view.setSize(img.getSize().x, img.getSize().y);
+		view.setCenter(img.getSize().x/2, img.getSize().y/2);
+		window.setView(view);
+		window.draw(sprite);
+		window.display();
+	}
+	window.setView(window.getDefaultView());
+	
+	//start game
 	GameStates gameState = GameStates::GAME_STATE_LEVEL;
 	while (window.isOpen()) {
 		sf::Event event;
