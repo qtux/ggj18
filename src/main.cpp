@@ -8,7 +8,7 @@ enum class GameStates {
 };
 
 int main() {
-	sf::RenderWindow window(sf::VideoMode(1024, 768), "Gamename", sf::Style::Default);
+	sf::RenderWindow window(sf::VideoMode(1024, 768), "SkillSwitch", sf::Style::Default);
 	
 	// test tmxlite
 	tmx::Map map;
