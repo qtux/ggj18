@@ -25,7 +25,7 @@ private:
 	b2World world;
 	tmx::Map map;
 	Player* playerTop;
-	Player* playerBottom;
+	//Player* playerBottom;
 	sf::View myView;
 	MapLayer* layerZero;
 	MapLayer* bg;

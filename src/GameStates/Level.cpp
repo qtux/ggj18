@@ -17,7 +17,7 @@ Level::Level(sf::RenderWindow& window):
 	layerZero = new MapLayer(map, 0);
 	bg = new MapLayer(map, 1);
 	playerTop = new Player(world);
-	playerBottom = new Player(world);
+	//playerBottom = new Player(world);
 	myView.setSize(1707,1280);
 	
 	for (auto& layer:map.getLayers()) {
@@ -46,7 +46,7 @@ Level::Level(sf::RenderWindow& window):
 Level::~Level() {
 	delete layerZero;
 	delete bg;
-	delete playerBottom;
+	//delete playerBottom;
 	delete playerTop;
 }
 
@@ -84,7 +84,7 @@ void Level::logic(const sf::Time deltaT) {
 	world.Step(deltaT.asSeconds(), 8, 3);
 	myView.setCenter(myView.getCenter().x + Settings::instance()->getProperty<float>("level_speed") * deltaT.asSeconds(), 1280./2);
 	playerTop->update(deltaT.asSeconds());
-	playerBottom->update(deltaT.asSeconds());
+	//playerBottom->update(deltaT.asSeconds());
 }
 
 void Level::draw() {
@@ -92,7 +92,7 @@ void Level::draw() {
 	window.draw(*layerZero);
 	window.draw(*bg);
 	window.draw(*playerTop);
-	window.draw(*playerBottom);
+	//window.draw(*playerBottom);
 }
 
 b2PolygonShape Level::createShape(const tmx::Object& obj) {
