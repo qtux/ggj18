@@ -59,7 +59,7 @@ public:
     MapLayer& operator = (const MapLayer&) = delete;
     const sf::FloatRect& getGlobalBounds() const {return m_globalBounds;}
 private:
-    sf::Vector2f m_chunkSize = sf::Vector2f(1024.f, 1024.f);
+    sf::Vector2f m_chunkSize = sf::Vector2f(200*64, 20*64);//sf::Vector2f(1024.f, 1024.f);
     sf::Vector2u m_chunkCount;
     sf::FloatRect m_globalBounds;
     using TextureResource = std::map<std::string, std::unique_ptr<sf::Texture>>;
