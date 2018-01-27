@@ -3,6 +3,8 @@
 #include "MapLayer.hpp"
 #include <Box2D/Box2D.h>
 
+#include "Player.hpp"
+
 enum class GameStates {
 	GAME_STATE_LEVEL = 0,
 	GAME_STATE_HELP
