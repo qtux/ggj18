@@ -1,3 +1,6 @@
 [submodule "tmxlite"]
 	path = tmxlite
 	url = ../../fallahn/tmxlite.git
+[submodule "sol2"]
+	path = sol2
+	url = ../../ThePhD/sol2.git

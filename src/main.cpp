@@ -4,10 +4,13 @@
 #include <Box2D/Box2D.h>
 #include <string>
 #include <iostream>
+#include "Settings.hpp"
 
 #include "Player.hpp"
 #include "Entity.hpp"
 #include "CollisionLayer.hpp"
+
+#include <sol.hpp>
 
 enum class GameStates {
 	GAME_STATE_INTRO = 0,
@@ -15,26 +18,36 @@ enum class GameStates {
 };
 
 int main() {
-	sf::RenderWindow window(sf::VideoMode(1024, 768), "SkillSwitch", sf::Style::Default);
+	sol::state lua;
+	lua.script_file("assets/scripts/config.lua");
+	std::cout << lua.get<std::string>("name") << std::endl;
+
+	bool useKeyboard = !sf::Joystick::isConnected(1); // use keyboard for second player if not two joysticks (=gamepads) are connected
+	
+	//sf::RenderWindow window(sf::VideoMode(lua.get<int>("screen_width"), lua.get<int>("screen_height")), lua.get<std::string>("name"), sf::Style::Default);
+	sf::RenderWindow window(sf::VideoMode(lua.get<int>("screen_width"), lua.get<int>("screen_height")), lua.get<std::string>("name"), sf::Style::Default);
 	sf::View myView = window.getDefaultView();
 	window.setView(myView);
 	
 	// test tmxlite
 	tmx::Map map;
-	map.load("assets/levels/level1.tmx");
+	map.load("assets/levels/level0.tmx");
 	MapLayer layerZero(map, 0);
+	MapLayer bg(map, 1);
 	
 	// test Box2D
 	b2Vec2 gravity(0.f, 9.8f);
 	b2World world(gravity);
 	CollisionLayer collision_layer(map, world);
-	Entity test("assets/sprites/level.png", sf::IntRect(10, 10, 50, 30), {100, 25}, {32, 32}, world);
+	Player tweet(world);
+	//Entity test("assets/sprites/dodo.png", sf::IntRect(0, 0, 32, 64), {0, 0}, {32, 64}, world);
 	
 	// the game view (full window)
 	//myView.setViewport(sf::FloatRect(0, 0, , 768./1280.));
 	//myView.zoom(1280./768.);
 	myView.setSize(1707,1280);//1707 = aspect ratio * 1280
 	
+	Player playerTop(world), playerBottom(world);
 	
 	// clock to determine fixed logic rate
 	sf::Clock clock;
@@ -52,6 +65,34 @@ int main() {
 			if (event.type == sf::Event::EventType::KeyPressed || event.type == sf::Event::EventType::MouseButtonPressed) {
 				switched = true;
 				++i;
+			}
+			if (event.type == sf::Event::JoystickButtonPressed)
+			{
+				bool toggleSwitch = false;
+				unsigned int joystickId = event.joystickButton.joystickId;
+				unsigned int joystickButton = event.joystickButton.button;
+				std::cout<<"joystick id: "<<joystickId<<", button: "<<joystickButton<<std::endl;
+				//if (sf::Joystick::isButtonPressed(joystickId, 5)) // RB button
+				if (sf::Joystick::getAxisPosition(joystickId, sf::Joystick::R)>60.)
+				{
+					toggleSwitch = true;
+				}
+				if (joystickId == 0)
+				{
+					if (toggleSwitch)
+						playerTop.ActionSwap(PlayerState::NONE);
+					else
+					playerTop.ActionTrigger(PlayerState::NONE);
+				}
+			}
+			
+			if (event.type == sf::Event::JoystickMoved)
+			{
+				if (event.joystickMove.axis == sf::Joystick::Axis::R){
+					std::cout << "axis moved: " <<event.joystickMove.axis<< std::endl;
+					std::cout << "joystick id: " << event.joystickMove.joystickId << std::endl;
+					std::cout << "new position: " << event.joystickMove.position << std::endl;
+}
 			}
 		}
 		window.clear(sf::Color::Black);
@@ -91,8 +132,8 @@ int main() {
 				case GameStates::GAME_STATE_LEVEL:
 					// functions
 					world.Step(deltaT.asSeconds(), 8, 3);
-					test.update();
-					myView.setCenter(myView.getCenter().x + 600 * deltaT.asSeconds(), 1280./2);
+					tweet.update(deltaT.asSeconds());
+					myView.setCenter(myView.getCenter().x + lua.get<float>("level_speed") * deltaT.asSeconds(), 1280./2);
 					break;
 			}
 		}
@@ -106,7 +147,8 @@ int main() {
 			}
 			case GameStates::GAME_STATE_LEVEL: {
 				window.draw(layerZero);
-				window.draw(test);
+				window.draw(bg);
+				window.draw(tweet);
 				break;
 			}
 		}
