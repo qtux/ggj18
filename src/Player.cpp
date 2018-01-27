@@ -15,7 +15,7 @@ Player::Player(b2World& world): Entity("assets/sprites/dodo.png", sf::IntRect(0,
 	state = PlayerState::NONE;
 	animationIndex = 0;
 	animationCounter = 0;
-	body->SetLinearVelocity( b2Vec2(Settings::instance()->getProperty<float>("level_speed"),0));
+	//body->SetLinearVelocity( b2Vec2(Settings::instance()->getProperty<float>("level_speed"),0));
 }
 
 void Player::ActionSwap(PlayerState myState){}
@@ -26,7 +26,9 @@ void Player::ActionTrigger(PlayerState myState){
 		case PlayerState::JUMPING:
 		std::cout<<"jump12345!"<<std::endl;
 			//body->ApplyLinearImpulse(b2Vec2(+40000,-10000),body->GetWorldCenter(),true); //
-			body->SetLinearVelocity( b2Vec2(0,-400000000000));
+			//body->ApplyLinearImpulse(b2Vec2(0,-100),body->GetWorldCenter(),true);
+			float v_x = body->GetLinearVelocity().x;
+			body->SetLinearVelocity( b2Vec2(v_x,-10));
 			//body->SetPosition(b2Vec2(0,0));
 			break;
 		
@@ -46,6 +48,8 @@ void Player::update(float dt) {
 			state = PlayerState::NONE;
 		}
 	}
+	float v_y = body->GetLinearVelocity().y;
+	body->SetLinearVelocity( b2Vec2(Settings::instance()->getProperty<float>("level_speed"),v_y));
 	// TODO fix positions
 	switch(state) {
 		case PlayerState::NONE:

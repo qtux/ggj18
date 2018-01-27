@@ -10,7 +10,7 @@ Level::Level(sf::RenderWindow& window):
 	GameState(window),
 	useKeyboard(!sf::Joystick::isConnected(1)),
 	gravity(b2Vec2(0.f, 9.8f)),
-	world(b2World(b2Vec2(0.f, 9.8f))),
+	world(b2World(gravity)),
 	map()
 {
 	map.load("assets/levels/level0.tmx");
@@ -25,12 +25,12 @@ Level::Level(sf::RenderWindow& window):
 			layer->getType() == tmx::Layer::Type::Object && layer->getName() == "Collision") {
 			auto collision_layer = *dynamic_cast<const tmx::ObjectGroup*>(layer.get());
 			for (auto& obj: collision_layer.getObjects()) {
-				// create the shape with a fixture
-				b2PolygonShape shape = createShape(obj);
+				// create the b2shape with a fixture
+				b2PolygonShape b2shape = createShape(obj);
 				b2FixtureDef fixtureDef;
 				fixtureDef.density = 1.f;
 				fixtureDef.friction = 0.7f;
-				fixtureDef.shape = &shape;
+				fixtureDef.shape = &b2shape;
 				// create a body and add the fixture
 				b2BodyDef bodyDef;
 				bodyDef.type = b2_staticBody;
@@ -64,10 +64,11 @@ void Level::processEvent(sf::Event& event) {
 			toggleSwitch = true;
 		}
 		if (joystickId == 0) {
-			if (toggleSwitch)
+			if (toggleSwitch) {
 				playerTop->ActionSwap(PlayerState::NONE);
-			else
-			playerTop->ActionTrigger(PlayerState::NONE);
+			} else {
+				playerTop->ActionTrigger(PlayerState::JUMPING);
+			}
 		}
 	}
 	
@@ -82,7 +83,9 @@ void Level::processEvent(sf::Event& event) {
 
 void Level::logic(const sf::Time deltaT) {
 	world.Step(deltaT.asSeconds(), 8, 3);
-	myView.setCenter(myView.getCenter().x + Settings::instance()->getProperty<float>("level_speed") * deltaT.asSeconds(), 1280./2);
+	auto scale = Settings::instance()->getProperty<float>("box2d_scale");
+	auto level_speed = Settings::instance()->getProperty<float>("level_speed");
+	myView.setCenter(myView.getCenter().x + level_speed * deltaT.asSeconds() / scale, 1280./2);
 	playerTop->update(deltaT.asSeconds());
 	//playerBottom->update(deltaT.asSeconds());
 }
@@ -99,27 +102,30 @@ b2PolygonShape Level::createShape(const tmx::Object& obj) {
 	switch(obj.getShape()) {
 		case tmx::Object::Shape::Rectangle: {
 			auto aabb = obj.getAABB();
-			b2PolygonShape shape;
-			shape.SetAsBox(
-				aabb.width * 0.5,
-				aabb.height * 0.5,
-				b2Vec2(aabb.left + aabb.width * 0.5, aabb.top + aabb.height * 0.5)
-				, 0
+			auto scale = Settings::instance()->getProperty<float>("box2d_scale");
+			b2PolygonShape b2shape;
+			b2shape.SetAsBox(
+				(aabb.width * 0.5) * scale,
+				(aabb.height * 0.5) * scale,
+				b2Vec2(
+					(aabb.left + aabb.width * 0.5) * scale,
+					(aabb.top + aabb.height * 0.5) * scale
+				), 0
 			);
-			return shape;
+			return b2shape;
 		}
 		case tmx::Object::Shape::Polygon: {
 			// deactivate erroneous code
 			/*auto points = obj.getPoints();
 			auto pos = obj.getPosition();
-			b2PolygonShape shape;
+			b2PolygonShape b2shape;
 			std::vector<b2Vec2> b2points;
 			b2points.reserve(points.size());
 			for (auto& point: points) {
 				b2points.push_back(b2Vec2(pos.x + point.x, pos.y + point.y));
 			}
-			shape.Set(b2points.data(), b2points.size());
-			return shape;*/
+			b2shape.Set(b2points.data(), b2points.size());
+			return b2shape;*/
 			break;
 		}
 		default: {
