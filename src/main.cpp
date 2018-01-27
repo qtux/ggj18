@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "Player.hpp"
+#include "CollisionLayer.hpp"
 
 enum class GameStates {
 	GAME_STATE_INTRO = 0,
@@ -34,6 +35,7 @@ int main() {
 	// test Box2D
 	b2Vec2 gravity(0.f, 9.8f);
 	b2World world(gravity);
+	CollisionLayer collision_layer(map, world);
 	
 	b2BodyDef bodyDef;
 	bodyDef.position = b2Vec2(100, 25);
