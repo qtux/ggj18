@@ -34,7 +34,7 @@ int main() {
 	MapLayer bg(map, 1);
 	
 	// test Box2D
-	b2Vec2 gravity(0.f, 9.8f);
+	b2Vec2 gravity(0.f, 98.f);
 	b2World world(gravity);
 	CollisionLayer collision_layer(map, world);
 	Player tweet(world);
@@ -80,7 +80,9 @@ int main() {
 					if (toggleSwitch)
 						playerTop.ActionSwap(PlayerState::NONE);
 					else
-					playerTop.ActionTrigger(PlayerState::NONE);
+					playerTop.ActionTrigger(PlayerState::JUMPING);
+					playerBottom.ActionTrigger(PlayerState::JUMPING);
+					tweet.ActionTrigger(PlayerState::JUMPING);
 				}
 			}
 			
@@ -129,9 +131,11 @@ int main() {
 				}
 				case GameStates::GAME_STATE_LEVEL:
 					// functions
-					world.Step(deltaT.asSeconds(), 8, 3);
-					tweet.update(deltaT.asSeconds());
-					myView.setCenter(myView.getCenter().x + Settings::instance()->getProperty<float>("level_speed") * deltaT.asSeconds(), 1280./2);
+					float dt = deltaT.asSeconds();
+					tweet.update(dt);
+					world.Step(dt, 8, 3);
+					
+					//myView.setCenter(myView.getCenter().x + Settings::instance()->getProperty<float>("level_speed") * dt, 1280./2);
 					break;
 			}
 		}
