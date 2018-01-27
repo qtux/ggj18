@@ -14,6 +14,7 @@ enum class PlayerState{
 class Player: public Entity {
 private:
 	PlayerState state;
+	static std::map<PlayerState, std::vector<int>> animationMap;
 public:
 	Player(b2World& world);
 	void ActionTrigger(PlayerState triggeredAction);
@@ -22,9 +23,4 @@ public:
 	~Player();
 };
 
-const static int none[] = {0};
-const static int walk[] = {3, 1, 3, 2, 3};
-const static int shoot[] = {3, 1, 3, 2, 3};
-const static int slide[] = {0, 1, 0};
-const static int fly[] = {0, 1, 2, 1, 2, 3};
-const static int jump[] = {0, 1, 2, 3, 4, 3};
+const static int scaleFactor = 4;
