@@ -1,35 +1,17 @@
 #include "Player.hpp"
 
-Player::Player(b2World &myWorld)
-{
-	myState = PlayerState::NONE;
-	initiatePhysics(myWorld);
-	
+Player::Player(b2World& world): Entity("assets/sprites/dodo.png", sf::IntRect(0, 0, 64, 64), {100, 100}, {64, 64}, world) {
+	state = PlayerState::NONE;
 }
 
-Player::~Player(){}
+//Player::~Player(){}
 
-void Player::initiatePhysics(b2World &myWorld)
-{
-	b2BodyDef bodyDef;
-	bodyDef.position = b2Vec2(100, 25);
-	bodyDef.type = b2_dynamicBody;
-	myPhysicsBody = myWorld.CreateBody(&bodyDef);
-	
-	b2PolygonShape shape;
-	shape.SetAsBox(32, 32);
-	b2FixtureDef fixtureDef;
-	fixtureDef.density = 1.f;
-	fixtureDef.friction = 0.7f;
-	fixtureDef.shape = &shape;
-	myPhysicsBody->CreateFixture(&fixtureDef);
-}
-
-void Player::Update()
-{
-	switch(myState)
-	{
-		break;
+void Player::update() {
+	switch(state) {
+		case PlayerState::NONE:
+			this->setTextureRect(sf::IntRect(0*64, 0*64+64, 64, 64));
+			break;
 	}
 
 }
+

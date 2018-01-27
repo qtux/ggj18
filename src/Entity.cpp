@@ -31,5 +31,10 @@ void Entity::update() {
 }
 
 void Entity::draw(sf::RenderTarget& renderTarget, sf::RenderStates states) const {
+
 	renderTarget.draw(shape, states);
+}
+
+void Entity::setTextureRect(sf::IntRect rect) {
+	shape.setTextureRect(rect);
 }
