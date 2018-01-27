@@ -1,9 +1,10 @@
 #include "Player.hpp"
 
-Player::Player()
+Player::Player(b2World* myWorld)
 {
 	myState = PlayerState::NONE;
-	myPhysicsBody = 0;
+	initiatePhysics(myWorld);
+	
 }
 
 
@@ -12,7 +13,7 @@ void Player::initiatePhysics(b2World* myWorld)
 	b2BodyDef bodyDef;
 	bodyDef.position = b2Vec2(100, 25);
 	bodyDef.type = b2_dynamicBody;
-	b2Body* body = myWorld->CreateBody(&bodyDef);
+	myPhysicsBody = myWorld->CreateBody(&bodyDef);
 	
 	b2PolygonShape shape;
 	shape.SetAsBox(32, 32);
@@ -20,7 +21,7 @@ void Player::initiatePhysics(b2World* myWorld)
 	fixtureDef.density = 1.f;
 	fixtureDef.friction = 0.7f;
 	fixtureDef.shape = &shape;
-	body->CreateFixture(&fixtureDef);
+	myPhysicsBody->CreateFixture(&fixtureDef);
 }
 
 void Player::Update()

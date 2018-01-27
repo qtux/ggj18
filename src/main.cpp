@@ -2,6 +2,7 @@
 #include <tmxlite/Map.hpp>
 #include "MapLayer.hpp"
 #include <Box2D/Box2D.h>
+#include <iostream>
 
 #include "Player.hpp"
 
@@ -12,6 +13,9 @@ enum class GameStates {
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1024, 768), "SkillSwitch", sf::Style::Default);
+	sf::View myView(sf::FloatRect(0,0,1024,768));
+	window.setView(myView);
+	
 	
 	// test tmxlite
 	tmx::Map map;
@@ -44,14 +48,20 @@ int main() {
 	fixtureDef.shape = &shape;
 	body->CreateFixture(&fixtureDef);
 	
+	float posx = 0;
+	
 	GameStates gameState = GameStates::GAME_STATE_LEVEL;
 	while (window.isOpen()) {
+		posx+=.1;
+		myView.setCenter(int(posx),768/2);
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
 		window.clear(sf::Color::Black);
+		window.setView(myView);
+		
 		switch(gameState) {
 			case GameStates::GAME_STATE_HELP:
 				// functions
@@ -66,6 +76,7 @@ int main() {
 				test.setPosition(body->GetPosition().x, body->GetPosition().y);
 				break;
 		}
+		//myView.display();
 		window.display();
 	}
 }
