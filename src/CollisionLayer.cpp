@@ -5,7 +5,6 @@
 
 CollisionLayer::CollisionLayer(const tmx::Map& map, b2World& world) {
 	for (auto& layer:map.getLayers()) {
-		std::cout << layer->getName() << std::endl;
 		if (map.getOrientation() == tmx::Orientation::Orthogonal &&
 			layer->getType() == tmx::Layer::Type::Object && layer->getName() == "Collision") {
 			auto collision_layer = *dynamic_cast<const tmx::ObjectGroup*>(layer.get());
