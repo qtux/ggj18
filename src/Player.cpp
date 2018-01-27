@@ -1,19 +1,20 @@
 #include "Player.hpp"
 
-Player::Player(b2World* myWorld)
+Player::Player(b2World &myWorld)
 {
 	myState = PlayerState::NONE;
 	initiatePhysics(myWorld);
 	
 }
 
+Player::~Player(){}
 
-void Player::initiatePhysics(b2World* myWorld)
+void Player::initiatePhysics(b2World &myWorld)
 {
 	b2BodyDef bodyDef;
 	bodyDef.position = b2Vec2(100, 25);
 	bodyDef.type = b2_dynamicBody;
-	myPhysicsBody = myWorld->CreateBody(&bodyDef);
+	myPhysicsBody = myWorld.CreateBody(&bodyDef);
 	
 	b2PolygonShape shape;
 	shape.SetAsBox(32, 32);

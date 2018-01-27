@@ -2,7 +2,7 @@
 
 #include <Box2D/Box2D.h>
 
-enum PlayerState{
+enum class PlayerState{
 	NONE,
 	JUMPING,
 	FLYING,
@@ -18,11 +18,14 @@ class Player
 	PlayerState myState;
 	
 	/// creates box2d objects for player
-	void initiatePhysics(b2World* myWorld); 
+	void initiatePhysics(b2World &myWorld); 
 	
 	public: 
 	
-	Player(b2World* myWorld);
+	Player(b2World &myWorld);
+	
+	void ActionTrigger(PlayerState triggeredAction);
+	void ActionSwap(PlayerState swappedAction);
 	
 	void Update();
 	

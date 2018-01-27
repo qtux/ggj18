@@ -35,6 +35,7 @@ int main() {
 	//myView.zoom(1280./768.);
 	myView.setSize(1707,1280);//1707 = aspect ratio * 1280
 	
+	Player PlayerTop(world), PlayerBottom(world);
 	
 	// clock to determine fixed logic rate
 	sf::Clock clock;
