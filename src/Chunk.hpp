@@ -25,18 +25,10 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-/*
-Creates an SFML drawable from an Orthogonal tmx map layer.
-This is an example of drawing with SFML - not all features,
-such as tile flipping, are implemented. For a more detailed
-implementation, including artifact prevention, see:
-https://github.com/fallahn/xygine/blob/master/xygine/src/components/ComponentTileMapLayer.cpp
-*/
-
 #pragma once
 
-#include <tmxlite/Map.hpp>
 #include <tmxlite/TileLayer.hpp>
+#include <tmxlite/Tileset.hpp>
 
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -48,28 +40,19 @@ https://github.com/fallahn/xygine/blob/master/xygine/src/components/ComponentTil
 #include <memory>
 #include <vector>
 #include <array>
-#include <map>
-#include <string>
 
-#include "Chunk.hpp"
+#include "ChunkArray.hpp"
 
-class MapLayer final: public sf::Drawable {
+class Chunk final : public sf::Transformable, public sf::Drawable {
 public:
-    MapLayer(const tmx::Map& map, std::size_t idx);
-    ~MapLayer() = default;
-    MapLayer(const MapLayer&) = delete;
-    MapLayer& operator = (const MapLayer&) = delete;
-    const sf::FloatRect& getGlobalBounds() const {return m_globalBounds;}
+	using TextureResource = std::map<std::string, std::unique_ptr<sf::Texture>>;
+	Chunk(const tmx::TileLayer& layer, std::vector<const tmx::Tileset*> tilesets,
+		const sf::Vector2f& position, const sf::Vector2f& tileCount, std::size_t rowSize,  TextureResource& tr);
+	~Chunk() = default;
+	Chunk(const Chunk&) = delete;
+	Chunk& operator = (const Chunk&) = delete;
+	bool empty() const { return m_chunkArrays.empty(); }
 private:
-    sf::Vector2f m_chunkSize = sf::Vector2f(200*64, 20*64);//sf::Vector2f(1024.f, 1024.f);
-    sf::Vector2u m_chunkCount;
-    sf::FloatRect m_globalBounds;
-    using TextureResource = std::map<std::string, std::unique_ptr<sf::Texture>>;
-    TextureResource m_textureResource;
-
-    std::vector<std::unique_ptr<Chunk>> m_chunks;
-    mutable std::vector<const Chunk*> m_visibleChunks;
-    void createChunks(const tmx::Map& map, const tmx::TileLayer& layer);
-    void updateVisibility(const sf::View& view) const;
-    void draw(sf::RenderTarget& rt, sf::RenderStates states) const override;
+	std::vector<std::unique_ptr<ChunkArray>> m_chunkArrays;
+	void draw(sf::RenderTarget& rt, sf::RenderStates states) const override;
 };
