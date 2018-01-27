@@ -102,9 +102,9 @@ int main() {
 					break;
 				case GameStates::GAME_STATE_LEVEL:
 					// functions
-					world.Step(timeStep, 8, 3);
+					world.Step(deltaT.asSeconds(), 8, 3);
 					test.setPosition(body->GetPosition().x, body->GetPosition().y);
-					myView.setCenter(myView.getCenter().x + 10, 1280./2);
+					myView.setCenter(myView.getCenter().x + 600 * deltaT.asSeconds(), 1280./2);
 					break;
 			}
 		}
