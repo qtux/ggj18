@@ -60,7 +60,7 @@ int main() {
 		}
 		window.clear(sf::Color::Black);
 		sf::Texture img;
-		if(img.loadFromFile("assets/intro/intro_" + std::to_string(i) + ".png") != true) {
+		if(i >= 2 || img.loadFromFile("assets/intro/intro_" + std::to_string(i) + ".png") != true) {
 			break;
 		}
 		sf::Sprite sprite(img);
