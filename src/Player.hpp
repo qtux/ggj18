@@ -22,7 +22,7 @@ class Player
 	
 	public: 
 	
-	Player();
+	Player(b2World* myWorld);
 	
 	void Update();
 	

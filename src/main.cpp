@@ -3,6 +3,7 @@
 #include "MapLayer.hpp"
 #include <Box2D/Box2D.h>
 #include <string>
+#include <iostream>
 
 #include "Player.hpp"
 
@@ -13,7 +14,8 @@ enum class GameStates {
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1024, 768), "SkillSwitch", sf::Style::Default);
-	sf::View view;
+	sf::View myView(sf::FloatRect(0,0,1024,768));
+	window.setView(myView);
 	
 	// test tmxlite
 	tmx::Map map;
@@ -62,23 +64,28 @@ int main() {
 			break;
 		}
 		sf::Sprite sprite(img);
-		view.setSize(img.getSize().x, img.getSize().y);
-		view.setCenter(img.getSize().x/2, img.getSize().y/2);
-		window.setView(view);
+		myView.setSize(img.getSize().x, img.getSize().y);
+		myView.setCenter(img.getSize().x/2, img.getSize().y/2);
+		window.setView(myView);
 		window.draw(sprite);
 		window.display();
 	}
 	window.setView(window.getDefaultView());
 	
 	//start game
+	float posx = 0;
 	GameStates gameState = GameStates::GAME_STATE_LEVEL;
 	while (window.isOpen()) {
+		posx+=.1;
+		myView.setCenter(int(posx),768/2);
 		sf::Event event;
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
 		window.clear(sf::Color::Black);
+		window.setView(myView);
+		
 		switch(gameState) {
 			case GameStates::GAME_STATE_HELP:
 				// functions
@@ -93,6 +100,7 @@ int main() {
 				test.setPosition(body->GetPosition().x, body->GetPosition().y);
 				break;
 		}
+		//myView.display();
 		window.display();
 	}
 }
