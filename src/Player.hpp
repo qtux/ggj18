@@ -18,7 +18,7 @@ public:
 	Player(b2World& world);
 	void ActionTrigger(PlayerState triggeredAction);
 	void ActionSwap(PlayerState swappedAction);
-	void update();
+	void update(float dt=-1.);
 	~Player();
 };
 

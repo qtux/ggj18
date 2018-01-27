@@ -124,7 +124,7 @@ int main() {
 				case GameStates::GAME_STATE_LEVEL:
 					// functions
 					world.Step(deltaT.asSeconds(), 8, 3);
-					tweet.update();
+					tweet.update(deltaT.asSeconds());
 					myView.setCenter(myView.getCenter().x + 6 * deltaT.asSeconds(), 1280./2);
 					break;
 			}

@@ -10,8 +10,8 @@ void Player::ActionTrigger(PlayerState myState){};
 
 Player::~Player(){}
 
-void Player::update() {
-	Entity::update();
+void Player::update(float dt) {
+	Entity::update(dt);
 	switch(state) {
 		case PlayerState::NONE:
 			this->setTextureRect(sf::IntRect(0*64, 0*64, 64, 64));

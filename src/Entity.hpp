@@ -8,7 +8,7 @@
 class Entity: public sf::Drawable {
 public:
 	Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<float> position, sf::Vector2<float> size, b2World& world);
-	void update();
+	void update(float dt = -1.);
 	void setTextureRect(sf::IntRect rect);
 private:
 	sf::Texture texture;

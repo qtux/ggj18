@@ -24,7 +24,7 @@ Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<f
 	body->CreateFixture(&fixtureDef);
 }
 
-void Entity::update() {
+void Entity::update(float dt) {
 	auto body_position = body->GetPosition();
 	shape.setPosition(body_position.x, body_position.y);
 }
