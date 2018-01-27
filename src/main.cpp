@@ -34,6 +34,14 @@ int main() {
 	bodyDef.type = b2_dynamicBody;
 	b2Body* body = world.CreateBody(&bodyDef);
 	
+	b2PolygonShape shape;
+	shape.SetAsBox(32, 32);
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 1.f;
+	fixtureDef.friction = 0.7f;
+	fixtureDef.shape = &shape;
+	body->CreateFixture(&fixtureDef);
+	
 	GameStates gameState = GameStates::GAME_STATE_LEVEL;
 	while (window.isOpen()) {
 		sf::Event event;
