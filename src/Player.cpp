@@ -7,6 +7,10 @@ Player::Player(b2World &myWorld)
 	
 }
 
+void Player::ActionSwap(PlayerState myState){};
+
+void Player::ActionTrigger(PlayerState myState){};
+
 Player::~Player(){}
 
 void Player::initiatePhysics(b2World &myWorld)
