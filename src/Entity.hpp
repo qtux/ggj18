@@ -15,6 +15,7 @@ public:
 	std::pair<bool,bool> hasContact();
 	sf::Vector2<float> getPos();
 	sf::Vector2<float> getSize();
+	void toggleShape();
 protected:
 	bool onGround = false;
 	bool wallHit = false;
@@ -24,6 +25,5 @@ protected:
 	sf::Vector2<float> position;
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const override;
 	b2Body* body;
-	
-	
+	bool toggle = true;
 };

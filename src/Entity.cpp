@@ -95,3 +95,31 @@ sf::Vector2<float> Entity::getPos() {
 sf::Vector2<float> Entity::getSize() {
 	return shape.getSize();
 }
+
+void Entity::toggleShape() {
+	auto currentFixture = body->GetFixtureList()[0];
+	auto scale = Settings::instance()->getProperty<float>("box2d_scale");
+	sf::Vector2f size = shape.getSize();
+	
+	float collider_scale;
+	if (toggle) {
+		toggle = false;
+		collider_scale = 0.34;	// hardcoded fix to enable a smaller collision box
+	} else {
+		toggle = true;
+		collider_scale = 0.68;	// hardcoded fix to enable a smaller collision box
+	}
+	
+	b2PolygonShape b2shape;
+	b2shape.SetAsBox(
+		size.x*.5f * scale * collider_scale, size.y*.5f * scale * collider_scale
+	);
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = currentFixture.GetDensity();
+	fixtureDef.friction = currentFixture.GetFriction();
+	fixtureDef.shape = &b2shape;
+	
+	body->DestroyFixture(&currentFixture);
+	body->CreateFixture(&fixtureDef);
+
+}
