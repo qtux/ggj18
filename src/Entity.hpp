@@ -12,10 +12,14 @@ public:
 	void update(float dt = -1.);
 	void setTextureRect(sf::IntRect rect);
 protected:
+	bool onGround = false;
+	bool wallHit = false;
 	sf::Texture texture;
 	sf::IntRect texture_rect;
 	sf::RectangleShape shape;
 	sf::Vector2<float> position;
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const override;
 	b2Body* body;
+	
+	bool hasContact();
 };
