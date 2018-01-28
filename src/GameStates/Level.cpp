@@ -15,7 +15,7 @@ Level::Level(sf::RenderWindow& window):
 	world(b2World(gravity)),
 	map()
 {
-	map.load(Settings::instance()->getProperty<float>("level_file"));
+	map.load(Settings::instance()->getProperty<std::string>("level_file"));
 	//at global scope
 	b2Draw *fooDrawInstance = new FooDraw();
 
@@ -82,6 +82,13 @@ void Level::processEvent(sf::Event& event) {
 				playerTop->ActionSwap(PlayerState::NONE);
 			} else {
 				playerTop->ActionTrigger(PlayerState::JUMPING);
+			}
+		}
+		if (joystickId == 1) {
+			if (toggleSwitch) {
+				playerBottom->ActionSwap(PlayerState::NONE);
+			} else {
+				playerBottom->ActionTrigger(PlayerState::JUMPING);
 			}
 		}
 	}
