@@ -1,6 +1,8 @@
 #include "Outro.hpp"
 #include "Level.hpp"
 
+#include "../Settings.hpp"
+
 Outro::Outro(sf::RenderWindow& window):	GameState(window) {
 	myView = window.getDefaultView();
 	window.setView(myView);
@@ -12,13 +14,13 @@ void Outro::processEvent(sf::Event& event) {
 		window.close();
 	}
 	if (event.type == sf::Event::EventType::KeyPressed || event.type == sf::Event::EventType::MouseButtonPressed || event.type == sf::Event::JoystickButtonPressed) {
-		nextState = std::unique_ptr<GameState>(new Level(window, 0));
+		nextState = std::unique_ptr<GameState>(new Level(window, Settings::instance()->getProperty<int>("start_level")));
 	}
 }
 
 void Outro::logic(const sf::Time deltaT) {
 	if (img.loadFromFile("assets/outro/outro.png") != true) {
-		nextState = std::unique_ptr<GameState> (new Level(window, 0));
+		nextState = std::unique_ptr<GameState> (new Level(window, Settings::instance()->getProperty<int>("start_level")));
 		return;
 	}
 	myView.setSize(img.getSize().x, img.getSize().y);

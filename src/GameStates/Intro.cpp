@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "../Settings.hpp"
+
 Intro::Intro(sf::RenderWindow& window):
 	GameState(window),
 	initialZoom(0.5),
@@ -26,7 +28,7 @@ void Intro::processEvent(sf::Event& event) {
 void Intro::logic(const sf::Time deltaT) {
 	// functions
 	if (switched && (i >= 2 || img.loadFromFile("assets/intro/intro_" + std::to_string(i) + ".png") != true)) {
-		nextState = std::unique_ptr<GameState> (new Level(window, 0));
+		nextState = std::unique_ptr<GameState> (new Level(window, Settings::instance()->getProperty<int>("start_level")));
 		return;
 	}
 	if (switched) {
