@@ -11,41 +11,79 @@ std::map<PlayerState, std::pair<std::vector<int>, std::vector<float>>> Player::a
    {PlayerState::JUMPING, {{0, 1, 2, 3, 4, 3},{baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2}}}
 };
 
-Player::Player(b2World& world): Entity("assets/sprites/dodo.png", sf::IntRect(0, 0, 64, 64), {100, 100}, {64*scaleFactor, 64*scaleFactor}, world) {
+Player::Player(b2World& world, bool color, sf::Vector2<float> position):
+	Entity("assets/sprites/dodo.png",
+		sf::IntRect(0, 0, 64, 64),
+		position,
+		{64*scaleFactor, 64*scaleFactor},
+		world,
+		Settings::instance()->getProperty<float>("player_density"),
+		Settings::instance()->getProperty<float>("player_friction")
+	)
+{
 	state = PlayerState::NONE;
 	animationIndex = 0;
 	animationCounter = 0;
-	//body->SetLinearVelocity( b2Vec2(Settings::instance()->getProperty<float>("level_speed"),0));
+	if (color) {
+		shape.setFillColor(sf::Color(164, 116, 74));
+	}
+	mySkills =  {{PlayerState::SHOOTING, false}, {PlayerState::SLIDING, false}, {PlayerState::FLYING, false}, {PlayerState::JUMPING, false}};
 }
 
-void Player::ActionSwap(PlayerState myState){}
+void Player::ActionSwap(PlayerState myState){
+	mySkills[myState] = !mySkills[myState];
+	}
 
 void Player::ActionTrigger(PlayerState myState){
 	switch(myState)
 	{
 		case PlayerState::JUMPING:
-		std::cout<<"jump12345!"<<std::endl;
-			//body->ApplyLinearImpulse(b2Vec2(+40000,-10000),body->GetWorldCenter(),true); //
-			//body->ApplyLinearImpulse(b2Vec2(0,-100),body->GetWorldCenter(),true);
-			float v_x = body->GetLinearVelocity().x;
-			body->SetLinearVelocity( b2Vec2(v_x,-10));
-			//body->SetPosition(b2Vec2(0,0));
+			if (mySkills[PlayerState::JUMPING] &&  hasContact())
+			{
+				body->ApplyLinearImpulse(b2Vec2(0, Settings::instance()->getProperty<float>("jump_impulse")),body->GetWorldCenter(),true);
+				this->state = myState;
+				timePassed = 0;
+				//this->onGround = false;
+			}
 			break;
-		
+		case PlayerState::FLYING:
+			if (hasSkill(PlayerState::FLYING))
+			{
+				body->SetGravityScale( Settings::instance()->getProperty<float>("flying_gravity_scale") );
+				this->state = myState;
+				timePassed = 0;
+			}
 	}
 }
 
 Player::~Player(){}
 
+void Player::duck()
+{
+
+}
+
+bool Player::hasSkill(PlayerState checkSTate)
+{
+	return mySkills[checkSTate];
+}
+
+
+void Player::standUp(){};
+
+
 void Player::update(float dt) {
 	Entity::update(dt);
+	timePassed +=dt;
 	// change animation after delaying it by the value given by a counter
 	if (animationCounter >= animationMap[state].second[animationIndex] * dt) {
 		++animationIndex;
 		animationCounter = 0;
 		if (animationIndex >= animationMap[state].first.size()) {
 			animationIndex = 0;
-			state = PlayerState::NONE;
+			
+			//std::cout<<"never gonna give you up"<<std::endl;
+			//state = PlayerState::NONE;
 		}
 	}
 	float v_y = body->GetLinearVelocity().y;
@@ -63,9 +101,20 @@ void Player::update(float dt) {
 			break;
 		case PlayerState::FLYING:
 			this->setTextureRect(sf::IntRect(animationMap[state].first[animationIndex]*64, 3*64, 64, 64));
+			std::cout<<"flyings"<<std::endl;
+			if (hasContact() && timePassed > .2)
+			{
+				state = PlayerState::NONE;
+				body->SetGravityScale(1);
+				std::cout<<"fullgrav"<<std::endl;
+			}
 			break;
 		case PlayerState::JUMPING:
 			this->setTextureRect(sf::IntRect(animationMap[state].first[animationIndex]*64, 4*64, 64, 64));
+			if (hasContact() && timePassed > .2)
+			{
+				state = PlayerState::NONE;
+			}
 			break;
 	}
 	++animationCounter;

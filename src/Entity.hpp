@@ -7,14 +7,21 @@
 
 class Entity: public sf::Drawable {
 public:
-	Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<float> position, sf::Vector2<float> size, b2World& world);
+	Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<float> position,
+		sf::Vector2<float> size, b2World& world, float density, float friction);
 	void update(float dt = -1.);
 	void setTextureRect(sf::IntRect rect);
+	
+	bool hasContact();
 protected:
+	bool onGround = false;
+	bool wallHit = false;
 	sf::Texture texture;
 	sf::IntRect texture_rect;
 	sf::RectangleShape shape;
 	sf::Vector2<float> position;
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const override;
 	b2Body* body;
+	
+	
 };

@@ -5,20 +5,41 @@
 #include "../Settings.hpp"
 
 #include <iostream>
+#include <memory>
+
+#include "Box2DDebugDrawer.hpp"
 
 Level::Level(sf::RenderWindow& window):
 	GameState(window),
 	useKeyboard(!sf::Joystick::isConnected(1)),
-	gravity(b2Vec2(0.f, 9.8f)),
+	gravity(b2Vec2(0.f, Settings::instance()->getProperty<float>("gravity"))),
 	world(b2World(gravity)),
 	map()
 {
-	map.load("assets/levels/level0.tmx");
+	lua_State *state = luaL_newstate();
+	luaL_loadfile(state, "assets/scripts/pcg.lua");
+	lua_pcall(state, 0, LUA_MULTRET, 0);
+
+	map.load(Settings::instance()->getProperty<std::string>("level_file"));
+	//at global scope
+	b2Draw *fooDrawInstance = new FooDraw();
+
+	//in constructor, usually
+	world.SetDebugDraw( fooDrawInstance );
+
+	//somewhere appropriate
+	fooDrawInstance->SetFlags( b2Draw::e_shapeBit );
+	debug_render_window = &window;
 	layerZero = new MapLayer(map, 0);
 	bg = new MapLayer(map, 1);
-	playerTop = new Player(world);
-	//playerBottom = new Player(world);
-	myView.setSize(1707,1280);
+	playerTop = new Player(world, false, {100,100});
+	playerTop->ActionSwap(PlayerState::JUMPING);
+	playerTop->ActionSwap(PlayerState::FLYING);
+	playerBottom = new Player(world, true, {100,800});
+	myView.setSize(
+		Settings::instance()->getProperty<float>("view_width"),
+		Settings::instance()->getProperty<float>("view_height")
+	);
 	
 	for (auto& layer:map.getLayers()) {
 		if (map.getOrientation() == tmx::Orientation::Orthogonal &&
@@ -46,9 +67,11 @@ Level::Level(sf::RenderWindow& window):
 Level::~Level() {
 	delete layerZero;
 	delete bg;
-	//delete playerBottom;
+	delete playerBottom;
 	delete playerTop;
 }
+
+static std::map<unsigned int, PlayerState> buttonLayout = {{0u,PlayerState::JUMPING},{1u,PlayerState::FLYING}};
 
 void Level::processEvent(sf::Event& event) {
 	if (event.type == sf::Event::Closed) {
@@ -64,11 +87,37 @@ void Level::processEvent(sf::Event& event) {
 			toggleSwitch = true;
 		}
 		if (joystickId == 0) {
-			if (toggleSwitch) {
-				playerTop->ActionSwap(PlayerState::NONE);
+			if (toggleSwitch && playerTop->hasSkill(buttonLayout[joystickButton])) {
+				playerTop->ActionSwap(buttonLayout[joystickButton]);
+				playerBottom->ActionSwap(buttonLayout[joystickButton]);
 			} else {
-				playerTop->ActionTrigger(PlayerState::JUMPING);
+				playerTop->ActionTrigger(buttonLayout[joystickButton]);
 			}
+		}
+		if (joystickId == 1) {
+			if (toggleSwitch && playerBottom->hasSkill(buttonLayout[joystickButton])) {
+				playerTop->ActionSwap(buttonLayout[joystickButton]);
+				playerBottom->ActionSwap(buttonLayout[joystickButton]);
+			} else {
+				playerBottom->ActionTrigger(buttonLayout[joystickButton]);
+			}
+		}
+	}
+	
+	if (event.type == sf::Event::KeyPressed)
+	{
+		if (event.key.code == sf::Keyboard::A)
+		{
+			if (useKeyboard)
+			{
+				playerBottom->ActionTrigger(PlayerState::JUMPING);
+			}
+		}
+		if (event.key.code == sf::Keyboard::Escape) {
+			window.close();
+		}
+		if (event.key.code == sf::Keyboard::R) {
+			nextState = std::unique_ptr<GameState>(new Level(window));
 		}
 	}
 	
@@ -85,9 +134,13 @@ void Level::logic(const sf::Time deltaT) {
 	world.Step(deltaT.asSeconds(), 8, 3);
 	auto scale = Settings::instance()->getProperty<float>("box2d_scale");
 	auto level_speed = Settings::instance()->getProperty<float>("level_speed");
-	myView.setCenter(myView.getCenter().x + level_speed * deltaT.asSeconds() / scale, 1280./2);
+	myView.setCenter(
+		myView.getCenter().x + level_speed * deltaT.asSeconds() / scale,
+		Settings::instance()->getProperty<float>("view_height") / 2
+	);
 	playerTop->update(deltaT.asSeconds());
-	//playerBottom->update(deltaT.asSeconds());
+	playerBottom->update(deltaT.asSeconds());
+	playerTop->hasContact();
 }
 
 void Level::draw() {
@@ -95,7 +148,8 @@ void Level::draw() {
 	window.draw(*layerZero);
 	window.draw(*bg);
 	window.draw(*playerTop);
-	//window.draw(*playerBottom);
+	world.DrawDebugData();
+	window.draw(*playerBottom);
 }
 
 b2PolygonShape Level::createShape(const tmx::Object& obj) {

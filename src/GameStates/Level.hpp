@@ -5,6 +5,7 @@
 #include <tmxlite/Map.hpp>
 #include <tmxlite/Object.hpp>
 #include <SFML/Graphics.hpp>
+#include <lua.hpp>
 
 // engine
 #include "../GameState.hpp"
@@ -25,7 +26,7 @@ private:
 	b2World world;
 	tmx::Map map;
 	Player* playerTop;
-	//Player* playerBottom;
+	Player* playerBottom;
 	sf::View myView;
 	MapLayer* layerZero;
 	MapLayer* bg;
