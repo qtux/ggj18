@@ -5,6 +5,7 @@
 #include "../Settings.hpp"
 
 #include <iostream>
+#include <memory>
 
 #include "Box2DDebugDrawer.hpp"
 
@@ -107,6 +108,12 @@ void Level::processEvent(sf::Event& event) {
 			{
 				playerBottom->ActionTrigger(PlayerState::JUMPING);
 			}
+		}
+		if (event.key.code == sf::Keyboard::Escape) {
+			window.close();
+		}
+		if (event.key.code == sf::Keyboard::R) {
+			nextState = std::unique_ptr<GameState>(new Level(window));
 		}
 	}
 	
