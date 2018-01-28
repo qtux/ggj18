@@ -1,6 +1,10 @@
-============
-Skill Switch
-============
+=========
+Dodos Day
+=========
+
+Dodo(om)s Day is about prolonging the inevitable...
+
+.. image:: assets/screenshots/ingame.png
 
 Run
 ---
@@ -18,7 +22,7 @@ Then ``git clone`` the project, create a build folder and do the following:
 Links
 -----
 
-Some links, probably to the Jam page and Youtube.
+https://globalgamejam.org/2018/games/dodos-day
 
 License
 -------
