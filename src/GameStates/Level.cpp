@@ -1,4 +1,4 @@
-#include "GameStates/Level.hpp"
+#include "Level.hpp"
 
 #include <tmxlite/ObjectGroup.hpp>
 

@@ -1,6 +1,6 @@
 #include "Entity.hpp"
 
-#include "../Settings.hpp"
+#include "Settings.hpp"
 
 Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<float> position,
 		sf::Vector2<float> size, b2World& world, float density, float friction) {
