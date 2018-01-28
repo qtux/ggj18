@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-#include "Box2DDebugDrawer.h"
+#include "Box2DDebugDrawer.hpp"
 
 Level::Level(sf::RenderWindow& window):
 	GameState(window),
