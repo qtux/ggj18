@@ -27,16 +27,19 @@ Player::Player(b2World& world, bool color, sf::Vector2<float> position):
 	if (color) {
 		shape.setFillColor(sf::Color(164, 116, 74));
 	}
+	mySkills =  {{PlayerState::SHOOTING, false}, {PlayerState::SLIDING, false}, {PlayerState::FLYING, false}, {PlayerState::JUMPING, false}};
 }
 
-void Player::ActionSwap(PlayerState myState){}
+void Player::ActionSwap(PlayerState myState){
+	mySkills[myState] = !mySkills[myState];
+	}
 
 void Player::ActionTrigger(PlayerState myState){
 	switch(myState)
 	{
 		case PlayerState::JUMPING:
 			std::cout<<"jump12345!"<<std::endl;
-			if (hasContact())
+			if (mySkills[PlayerState::JUMPING] &&  hasContact())
 			{
 				body->ApplyLinearImpulse(b2Vec2(0, Settings::instance()->getProperty<float>("jump_impulse")),body->GetWorldCenter(),true);
 				this->state = myState;
@@ -49,6 +52,14 @@ void Player::ActionTrigger(PlayerState myState){
 }
 
 Player::~Player(){}
+
+void Player::duck()
+{
+
+}
+
+void Player::standUp(){};
+
 
 void Player::update(float dt) {
 	Entity::update(dt);

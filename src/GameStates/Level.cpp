@@ -28,6 +28,7 @@ Level::Level(sf::RenderWindow& window):
 	layerZero = new MapLayer(map, 0);
 	bg = new MapLayer(map, 1);
 	playerTop = new Player(world, false, {100,100});
+	playerTop->ActionSwap(PlayerState::JUMPING);
 	playerBottom = new Player(world, true, {100,800});
 	myView.setSize(
 		Settings::instance()->getProperty<float>("view_width"),
@@ -79,14 +80,16 @@ void Level::processEvent(sf::Event& event) {
 		}
 		if (joystickId == 0) {
 			if (toggleSwitch) {
-				playerTop->ActionSwap(PlayerState::NONE);
+				playerTop->ActionSwap(PlayerState::JUMPING);
+				playerBottom->ActionSwap(PlayerState::JUMPING);
 			} else {
 				playerTop->ActionTrigger(PlayerState::JUMPING);
 			}
 		}
 		if (joystickId == 1) {
 			if (toggleSwitch) {
-				playerBottom->ActionSwap(PlayerState::NONE);
+				playerTop->ActionSwap(PlayerState::JUMPING);
+				playerBottom->ActionSwap(PlayerState::JUMPING);
 			} else {
 				playerBottom->ActionTrigger(PlayerState::JUMPING);
 			}
