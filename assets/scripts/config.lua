@@ -12,7 +12,7 @@ aspect_ratio = screen_width/screen_height
 view_width = aspect_ratio * 20 * 64
 view_height = 20 * 64
 level_speed = 1.5
-level_file = "assets/levels/level1.tmx"
+level_file = "assets/levels/level0.tmx"
 
 -- player config
 jump_impulse = -0.5
