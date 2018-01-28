@@ -16,7 +16,7 @@ int main() {
 	
 	std::unique_ptr<GameState> state(new Intro(window));
 	
-	while(true) {
+	while(state != nullptr) {
 		state = state->run();
 	}
 	//window.setView(myView);
