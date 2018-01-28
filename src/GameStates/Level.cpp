@@ -83,6 +83,17 @@ void Level::processEvent(sf::Event& event) {
 		}
 	}
 	
+	if (event.type == sf::Event::KeyPressed)
+	{
+		if (event.key.code == sf::Keyboard::A)
+		{
+			if (useKeyboard)
+			{
+				playerBottom->ActionTrigger(PlayerState::JUMPING);
+			}
+		}
+	}
+	
 	if (event.type == sf::Event::JoystickMoved) {
 		if (event.joystickMove.axis == sf::Joystick::Axis::R) {
 			std::cout << "axis moved: " <<event.joystickMove.axis<< std::endl;
