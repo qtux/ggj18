@@ -4,8 +4,8 @@ tilesize = 64
 
 math.randomseed(os.time())
 
---file = io.open("assets/levels/level.tmx", "w")
-file = io.open("../levels/level.tmx", "w")
+file = io.open("assets/levels/level.tmx", "w+")
+--file = io.open("../levels/level.tmx", "w+")
 io.output(file)
 io.write('<?xml version="1.0" encoding="UTF-8"?>\n')
 io.write('<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="' .. width .. '" height="' .. height .. '" tilewidth="' .. tilesize .. '" tileheight="' .. tilesize .. '" infinite="0" nextobjectid="13">\n')
@@ -27,6 +27,7 @@ for i=0,height-1 do
 end
 io.write('</data>\n')
 io.write(' </layer>\n')
+io.flush(file)
 
 -- Level Layer
 io.write(' <layer name="Kachelebene 1" width="' .. width .. '" height="' .. height .. '">\n')
@@ -83,6 +84,7 @@ for i=0,height-1 do
 end
 io.write('</data>\n')
 io.write(' </layer>\n')
+io.flush(file)
 
 -- Collisions
 io.write(' <objectgroup name="Collision">\n')
