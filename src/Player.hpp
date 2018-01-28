@@ -28,7 +28,7 @@ public:
 	void ActionTrigger(PlayerState triggeredAction);
 	void ActionSwap(PlayerState swappedAction);
 	void update(float dt=-1.);
-	
+	bool hasSkill(PlayerState checkSTate);
 	~Player();
 };
 

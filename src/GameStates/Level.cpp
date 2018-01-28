@@ -5,6 +5,7 @@
 #include "../Settings.hpp"
 
 #include <iostream>
+#include <memory>
 
 #include "Box2DDebugDrawer.hpp"
 
@@ -33,6 +34,7 @@ Level::Level(sf::RenderWindow& window):
 	bg = new MapLayer(map, 1);
 	playerTop = new Player(world, false, {100,100});
 	playerTop->ActionSwap(PlayerState::JUMPING);
+	playerTop->ActionSwap(PlayerState::FLYING);
 	playerBottom = new Player(world, true, {100,800});
 	myView.setSize(
 		Settings::instance()->getProperty<float>("view_width"),
@@ -69,6 +71,8 @@ Level::~Level() {
 	delete playerTop;
 }
 
+static std::map<unsigned int, PlayerState> buttonLayout = {{0u,PlayerState::JUMPING},{1u,PlayerState::FLYING}};
+
 void Level::processEvent(sf::Event& event) {
 	if (event.type == sf::Event::Closed) {
 		window.close();
@@ -83,19 +87,19 @@ void Level::processEvent(sf::Event& event) {
 			toggleSwitch = true;
 		}
 		if (joystickId == 0) {
-			if (toggleSwitch) {
-				playerTop->ActionSwap(PlayerState::JUMPING);
-				playerBottom->ActionSwap(PlayerState::JUMPING);
+			if (toggleSwitch && playerTop->hasSkill(buttonLayout[joystickButton])) {
+				playerTop->ActionSwap(buttonLayout[joystickButton]);
+				playerBottom->ActionSwap(buttonLayout[joystickButton]);
 			} else {
-				playerTop->ActionTrigger(PlayerState::JUMPING);
+				playerTop->ActionTrigger(buttonLayout[joystickButton]);
 			}
 		}
 		if (joystickId == 1) {
-			if (toggleSwitch) {
-				playerTop->ActionSwap(PlayerState::JUMPING);
-				playerBottom->ActionSwap(PlayerState::JUMPING);
+			if (toggleSwitch && playerBottom->hasSkill(buttonLayout[joystickButton])) {
+				playerTop->ActionSwap(buttonLayout[joystickButton]);
+				playerBottom->ActionSwap(buttonLayout[joystickButton]);
 			} else {
-				playerBottom->ActionTrigger(PlayerState::JUMPING);
+				playerBottom->ActionTrigger(buttonLayout[joystickButton]);
 			}
 		}
 	}
@@ -108,6 +112,12 @@ void Level::processEvent(sf::Event& event) {
 			{
 				playerBottom->ActionTrigger(PlayerState::JUMPING);
 			}
+		}
+		if (event.key.code == sf::Keyboard::Escape) {
+			window.close();
+		}
+		if (event.key.code == sf::Keyboard::R) {
+			nextState = std::unique_ptr<GameState>(new Level(window));
 		}
 	}
 	
