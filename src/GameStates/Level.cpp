@@ -15,6 +15,10 @@ Level::Level(sf::RenderWindow& window):
 	world(b2World(gravity)),
 	map()
 {
+	lua_State *state = luaL_newstate();
+	luaL_loadfile(state, "assets/scripts/pcg.lua");
+	lua_pcall(state, 0, LUA_MULTRET, 0);
+
 	map.load(Settings::instance()->getProperty<std::string>("level_file"));
 	//at global scope
 	b2Draw *fooDrawInstance = new FooDraw();

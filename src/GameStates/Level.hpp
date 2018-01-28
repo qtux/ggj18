@@ -5,6 +5,7 @@
 #include <tmxlite/Map.hpp>
 #include <tmxlite/Object.hpp>
 #include <SFML/Graphics.hpp>
+#include <lua.hpp>
 
 // engine
 #include "../GameState.hpp"
