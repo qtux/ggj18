@@ -30,7 +30,7 @@ Level::Level(sf::RenderWindow& window, int levelNumber):
 	b2Draw *fooDrawInstance = new FooDraw();
 
 	//in constructor, usually
-	world.SetDebugDraw( fooDrawInstance );
+	if (Settings::instance()->getProperty<int>("debug_draw") >0) world.SetDebugDraw( fooDrawInstance );
 
 	//somewhere appropriate
 	fooDrawInstance->SetFlags( b2Draw::e_shapeBit );
@@ -265,7 +265,7 @@ void Level::draw() {
 	window.draw(*layerZero);
 	window.draw(*bg);
 	window.draw(*playerTop);
-	world.DrawDebugData();
+	if (Settings::instance()->getProperty<int>("debug_draw") >0) world.DrawDebugData();
 	window.draw(*playerBottom);
 	window.draw(skillJump);
 	window.draw(skillFly);
