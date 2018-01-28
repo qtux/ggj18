@@ -19,3 +19,5 @@ jump_impulse = -0.4
 player_friction = 0
 player_density = 1
 flying_gravity_scale = 0.2
+
+immortal = 3
