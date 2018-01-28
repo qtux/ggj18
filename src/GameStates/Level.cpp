@@ -35,6 +35,7 @@ Level::Level(sf::RenderWindow& window):
 	playerTop = new Player(world, false, {100,100});
 	playerTop->ActionSwap(PlayerState::JUMPING);
 	playerTop->ActionSwap(PlayerState::FLYING);
+	playerTop->ActionSwap(PlayerState::SLIDING);
 	skillJump = sf::CircleShape(16);
 	skillJump.setPosition({100, 100});
 	skillJump.setFillColor({0, 255, 0, 100});
@@ -45,6 +46,11 @@ Level::Level(sf::RenderWindow& window):
 	skillFly.setFillColor({255, 0, 0, 100});
 	skillFly.setOutlineColor({0,0,0,255});
 	skillFly.setOutlineThickness(4);
+	skillSlide = sf::CircleShape(16);
+	skillSlide.setPosition({100, 50});
+	skillSlide.setFillColor({0, 0, 255, 100});
+	skillSlide.setOutlineColor({0,0,0,255});
+	skillSlide.setOutlineThickness(4);
 	playerBottom = new Player(world, true, {100,800});
 	myView.setSize(
 		Settings::instance()->getProperty<float>("view_width"),
@@ -81,7 +87,7 @@ Level::~Level() {
 	delete playerTop;
 }
 
-static std::map<unsigned int, PlayerState> buttonLayout = {{0u,PlayerState::JUMPING},{1u,PlayerState::FLYING}};
+static std::map<unsigned int, PlayerState> buttonLayout = {{0u,PlayerState::JUMPING},{1u,PlayerState::FLYING},{2u,PlayerState::SLIDING}};
 
 void Level::processEvent(sf::Event& event) {
 	if (event.type == sf::Event::Closed) {
@@ -199,7 +205,7 @@ void Level::logic(const sf::Time deltaT) {
 	float diffTop = -40;
 	float diffBottom = -40;
 	if (playerTop->hasSkill(PlayerState::JUMPING)) {
-		std::cout<<playerTop->getPos().x << std::endl;
+		//std::cout<<playerTop->getPos().x << std::endl;
 		skillJump.setPosition(playerTop->getPos() + sf::Vector2f(playerTop->getSize().x / 2 + diffTop, 0));
 		diffTop += 40;
 	} else if (playerBottom->hasSkill(PlayerState::JUMPING)) {
@@ -213,6 +219,13 @@ void Level::logic(const sf::Time deltaT) {
 		skillFly.setPosition(playerBottom->getPos() + sf::Vector2f(playerBottom->getSize().x / 2 + diffBottom, 0));
 		diffBottom += 40;
 	}
+	if (playerTop->hasSkill(PlayerState::SLIDING)) {
+		skillSlide.setPosition(playerTop->getPos() + sf::Vector2f(playerTop->getSize().x / 2  + diffTop, 0));
+		diffTop += 40;
+	} else if (playerBottom->hasSkill(PlayerState::SLIDING)) {
+		skillSlide.setPosition(playerBottom->getPos() + sf::Vector2f(playerBottom->getSize().x / 2 + diffBottom, 0));
+		diffBottom += 40;
+	}
 }
 
 void Level::draw() {
@@ -224,6 +237,7 @@ void Level::draw() {
 	window.draw(*playerBottom);
 	window.draw(skillJump);
 	window.draw(skillFly);
+	window.draw(skillSlide);
 }
 
 b2PolygonShape Level::createShape(const tmx::Object& obj) {

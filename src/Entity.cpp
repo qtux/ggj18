@@ -2,6 +2,8 @@
 
 #include "Settings.hpp"
 
+#include <iostream>
+
 Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<float> position,
 		sf::Vector2<float> size, b2World& world, float density, float friction) {
 	// load texture and create a shape
@@ -94,4 +96,25 @@ sf::Vector2<float> Entity::getPos() {
 
 sf::Vector2<float> Entity::getSize() {
 	return shape.getSize();
+}
+
+void Entity::toggleShape() {
+	std::cout << "toggle" << std::endl;
+	b2PolygonShape* b2shape = dynamic_cast<b2PolygonShape*>(body->GetFixtureList()[0].GetShape());
+	
+	//float collider_scale;
+	float scale;
+	if (toggle) {
+		toggle = false;
+		scale = 0.5;
+	} else {
+		toggle = true;
+		scale = 2;
+	}
+	
+	/*for (int i = 0; i < b2shape->m_count; ++i) {
+		std::cout << b2shape->m_vertices[i].x << " " << b2shape->m_vertices[i].y << std::endl;
+	}*/
+	b2shape->m_vertices[2].y *= scale; 
+	b2shape->m_vertices[3].y *= scale;
 }

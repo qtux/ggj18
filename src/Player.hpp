@@ -19,7 +19,7 @@ private:
 	static std::map<PlayerState, std::pair<std::vector<int>, std::vector<float>>> animationMap;
 	int animationIndex;
 	int animationCounter;
-	
+	bool ducked = false;
 	void duck();
 	void standUp();
 	
