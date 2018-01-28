@@ -53,6 +53,21 @@ void Player::ActionTrigger(PlayerState myState){
 				this->state = myState;
 				timePassed = 0;
 			}
+			break;
+		case PlayerState::SLIDING:
+			if (hasSkill(PlayerState::SLIDING))
+			{
+				if (ducked) 
+				{
+					standUp();
+					this->state = PlayerState::NONE;
+				}
+				else
+				{
+					duck();
+					this->state = PlayerState::SLIDING;
+				}
+			}
 	}
 }
 
@@ -60,7 +75,11 @@ Player::~Player(){}
 
 void Player::duck()
 {
-
+	if (!ducked)
+	{
+		this->toggleShape();
+		ducked = true;
+	}
 }
 
 bool Player::hasSkill(PlayerState checkSTate)
@@ -69,7 +88,13 @@ bool Player::hasSkill(PlayerState checkSTate)
 }
 
 
-void Player::standUp(){};
+void Player::standUp(){
+	if (ducked)
+	{
+		this->toggleShape();
+		ducked = false;
+	}
+};
 
 
 void Player::update(float dt) {
@@ -97,6 +122,11 @@ void Player::update(float dt) {
 			this->setTextureRect(sf::IntRect(animationMap[state].first[animationIndex]*64, 1*64, 64, 64));
 			break;
 		case PlayerState::SLIDING:
+			if (!hasSkill(PlayerState::SLIDING)) 
+			{
+				standUp();
+				state = PlayerState::NONE;
+			}
 			this->setTextureRect(sf::IntRect(animationMap[state].first[animationIndex]*64, 2*64, 64, 64));
 			break;
 		case PlayerState::FLYING:
