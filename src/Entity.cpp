@@ -31,8 +31,9 @@ Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<f
 	body->CreateFixture(&fixtureDef);
 }
 
-bool Entity::hasContact() {
+std::pair<bool,bool> Entity::hasContact() {
 	// iterate over the Box2d body's contacts
+	bool isDead=false, onGround=false;
 	b2ContactEdge* edge = nullptr;
 	int ct = 0;
 	for (edge = body->GetContactList(); edge; edge = edge->next) {
@@ -42,13 +43,17 @@ bool Entity::hasContact() {
 		ct++;
 		// std::cout<<"hasContact"<<std::endl;
 		// get vector from the body's position to the contact's
-		b2Vec2 v = edge->other->GetPosition() - body->GetPosition();
+		//b2Vec2 v = edge->other->GetPosition() - body->GetPosition();
 		b2Vec2 norm = edge->contact->GetManifold()->localNormal;
 
 		//std::cout<<"collision #"<<ct<<": v.x = "<<v.x<<", v.y = "<<v.y<<std::endl; 
 		//std::cout<<"collision #"<<ct<<": norm.x = "<<norm.x<<", norm.y = "<<norm.y<<std::endl; 
 		if (fabs(norm.x) > .1) {
-			std::cout<<"dead"<<std::endl;
+			isDead = true;
+		}
+		else
+		{
+			onGround = true;
 		}
 		//if (!onGround)std::cout<<"hasContact "<<v.x << ","<<v.y<<std::endl;
 		/*if (fabs(v.x) > 20) {
@@ -60,10 +65,9 @@ bool Entity::hasContact() {
 			//onGround = true;
 		//}
 	}
-	if (ct>0) {
-		 return true;
-	}
-	return false;
+	
+	return std::make_pair(onGround, isDead);
+	
 }
 
 
@@ -82,4 +86,12 @@ void Entity::draw(sf::RenderTarget& renderTarget, sf::RenderStates states) const
 
 void Entity::setTextureRect(sf::IntRect rect) {
 	shape.setTextureRect(rect);
+}
+
+sf::Vector2<float> Entity::getPos() {
+	return shape.getPosition();
+}
+
+sf::Vector2<float> Entity::getSize() {
+	return shape.getSize();
 }

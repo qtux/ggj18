@@ -12,7 +12,9 @@ public:
 	void update(float dt = -1.);
 	void setTextureRect(sf::IntRect rect);
 	
-	bool hasContact();
+	std::pair<bool,bool> hasContact();
+	sf::Vector2<float> getPos();
+	sf::Vector2<float> getSize();
 protected:
 	bool onGround = false;
 	bool wallHit = false;
