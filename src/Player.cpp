@@ -119,4 +119,3 @@ void Player::update(float dt) {
 	}
 	++animationCounter;
 }
-

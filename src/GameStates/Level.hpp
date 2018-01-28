@@ -30,4 +30,5 @@ private:
 	sf::View myView;
 	MapLayer* layerZero;
 	MapLayer* bg;
+	sf::CircleShape skillJump, skillFly;
 };

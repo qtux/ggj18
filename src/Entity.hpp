@@ -13,6 +13,8 @@ public:
 	void setTextureRect(sf::IntRect rect);
 	
 	bool hasContact();
+	sf::Vector2<float> getPos();
+	sf::Vector2<float> getSize();
 protected:
 	bool onGround = false;
 	bool wallHit = false;
