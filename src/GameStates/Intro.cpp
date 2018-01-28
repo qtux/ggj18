@@ -1,5 +1,5 @@
-#include "GameStates/Intro.hpp"
-#include "GameStates/Level.hpp"
+#include "Intro.hpp"
+#include "Level.hpp"
 
 #include <iostream>
 

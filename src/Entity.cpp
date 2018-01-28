@@ -1,6 +1,6 @@
 #include "Entity.hpp"
 
-#include "../Settings.hpp"
+#include "Settings.hpp"
 
 #include <iostream>
 

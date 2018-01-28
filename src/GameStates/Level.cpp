@@ -1,4 +1,4 @@
-#include "GameStates/Level.hpp"
+#include "Level.hpp"
 
 #include <tmxlite/ObjectGroup.hpp>
 
@@ -196,7 +196,10 @@ void Level::logic(const sf::Time deltaT) {
 	playerTop->update(deltaT.asSeconds());
 	playerBottom->update(deltaT.asSeconds());
 
-	if ((playerTop->hasContact().second && (isImmortal == 0 || isImmortal == 2)) || (playerBottom->hasContact().second && (isImmortal == 0 || isImmortal ==1))) nextState = std::unique_ptr<GameState>(new Level(window));;
+	// die
+	if ((playerTop->hasContact().second && (isImmortal == 0 || isImmortal == 2)) || (playerBottom->hasContact().second && (isImmortal == 0 || isImmortal ==1))) {
+		nextState = std::unique_ptr<GameState>(new Deathscreen(window));
+	}
 
 	// skill following the correct player
 	float diffTop = -40;

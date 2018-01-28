@@ -11,6 +11,7 @@
 #include "../GameState.hpp"
 #include "../Player.hpp"
 #include "../MapLayer.hpp"
+#include "Deathscreen.hpp"
 
 class Level: public GameState {
 public:
