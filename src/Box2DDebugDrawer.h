@@ -17,7 +17,6 @@ void drawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color
 		convex.setPoint(i,sf::Vector2f(vertices[i].x*scaleFactor,vertices[i].y*scaleFactor));
 	}
 	convex.setFillColor(sf::Color(100, 250, 50,50));
-	std::cout<<"HILSUEFLISUEFB"<<std::endl;
 	debug_render_window->draw(convex);
 }
 
