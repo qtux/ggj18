@@ -2,6 +2,8 @@
 
 #include "../Settings.hpp"
 
+#include <iostream>
+
 Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<float> position,
 		sf::Vector2<float> size, b2World& world, float density, float friction) {
 	// load texture and create a shape
@@ -97,29 +99,22 @@ sf::Vector2<float> Entity::getSize() {
 }
 
 void Entity::toggleShape() {
-	auto currentFixture = body->GetFixtureList()[0];
-	auto scale = Settings::instance()->getProperty<float>("box2d_scale");
-	sf::Vector2f size = shape.getSize();
+	std::cout << "toggle" << std::endl;
+	b2PolygonShape* b2shape = dynamic_cast<b2PolygonShape*>(body->GetFixtureList()[0].GetShape());
 	
-	float collider_scale;
+	//float collider_scale;
+	float scale;
 	if (toggle) {
 		toggle = false;
-		collider_scale = 0.34;	// hardcoded fix to enable a smaller collision box
+		scale = 0.5;
 	} else {
 		toggle = true;
-		collider_scale = 0.68;	// hardcoded fix to enable a smaller collision box
+		scale = 2;
 	}
 	
-	b2PolygonShape b2shape;
-	b2shape.SetAsBox(
-		size.x*.5f * scale * collider_scale, size.y*.5f * scale * collider_scale
-	);
-	b2FixtureDef fixtureDef;
-	fixtureDef.density = currentFixture.GetDensity();
-	fixtureDef.friction = currentFixture.GetFriction();
-	fixtureDef.shape = &b2shape;
-	
-	body->DestroyFixture(&currentFixture);
-	body->CreateFixture(&fixtureDef);
-
+	/*for (int i = 0; i < b2shape->m_count; ++i) {
+		std::cout << b2shape->m_vertices[i].x << " " << b2shape->m_vertices[i].y << std::endl;
+	}*/
+	b2shape->m_vertices[2].y *= scale; 
+	b2shape->m_vertices[3].y *= scale;
 }
