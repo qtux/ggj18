@@ -17,7 +17,7 @@ void Intro::processEvent(sf::Event& event) {
 	if (event.type == sf::Event::Closed) {
 		window.close();
 	}
-	if (event.type == sf::Event::EventType::KeyPressed || event.type == sf::Event::EventType::MouseButtonPressed) {
+	if (event.type == sf::Event::EventType::KeyPressed || event.type == sf::Event::EventType::MouseButtonPressed || event.type == sf::Event::JoystickButtonPressed) {
 		switched = true;
 		++i;
 	}
