@@ -6,19 +6,33 @@
 
 #include <iostream>
 
+#include "Box2DDebugDrawer.hpp"
+
 Level::Level(sf::RenderWindow& window):
 	GameState(window),
 	useKeyboard(!sf::Joystick::isConnected(1)),
-	gravity(b2Vec2(0.f, 9.8f)),
+	gravity(b2Vec2(0.f, Settings::instance()->getProperty<float>("gravity"))),
 	world(b2World(gravity)),
 	map()
 {
-	map.load("assets/levels/level0.tmx");
+	map.load(Settings::instance()->getProperty<std::string>("level_file"));
+	//at global scope
+	b2Draw *fooDrawInstance = new FooDraw();
+
+	//in constructor, usually
+	world.SetDebugDraw( fooDrawInstance );
+
+	//somewhere appropriate
+	fooDrawInstance->SetFlags( b2Draw::e_shapeBit );
+	debug_render_window = &window;
 	layerZero = new MapLayer(map, 0);
 	bg = new MapLayer(map, 1);
-	playerTop = new Player(world);
-	//playerBottom = new Player(world);
-	myView.setSize(1707,1280);
+	playerTop = new Player(world, {100,100});
+	playerBottom = new Player(world,{100,800});
+	myView.setSize(
+		Settings::instance()->getProperty<float>("view_width"),
+		Settings::instance()->getProperty<float>("view_height")
+	);
 	
 	for (auto& layer:map.getLayers()) {
 		if (map.getOrientation() == tmx::Orientation::Orthogonal &&
@@ -46,7 +60,7 @@ Level::Level(sf::RenderWindow& window):
 Level::~Level() {
 	delete layerZero;
 	delete bg;
-	//delete playerBottom;
+	delete playerBottom;
 	delete playerTop;
 }
 
@@ -70,6 +84,24 @@ void Level::processEvent(sf::Event& event) {
 				playerTop->ActionTrigger(PlayerState::JUMPING);
 			}
 		}
+		if (joystickId == 1) {
+			if (toggleSwitch) {
+				playerBottom->ActionSwap(PlayerState::NONE);
+			} else {
+				playerBottom->ActionTrigger(PlayerState::JUMPING);
+			}
+		}
+	}
+	
+	if (event.type == sf::Event::KeyPressed)
+	{
+		if (event.key.code == sf::Keyboard::A)
+		{
+			if (useKeyboard)
+			{
+				playerBottom->ActionTrigger(PlayerState::JUMPING);
+			}
+		}
 	}
 	
 	if (event.type == sf::Event::JoystickMoved) {
@@ -85,9 +117,12 @@ void Level::logic(const sf::Time deltaT) {
 	world.Step(deltaT.asSeconds(), 8, 3);
 	auto scale = Settings::instance()->getProperty<float>("box2d_scale");
 	auto level_speed = Settings::instance()->getProperty<float>("level_speed");
-	myView.setCenter(myView.getCenter().x + level_speed * deltaT.asSeconds() / scale, 1280./2);
+	myView.setCenter(
+		myView.getCenter().x + level_speed * deltaT.asSeconds() / scale,
+		Settings::instance()->getProperty<float>("view_height") / 2
+	);
 	playerTop->update(deltaT.asSeconds());
-	//playerBottom->update(deltaT.asSeconds());
+	playerBottom->update(deltaT.asSeconds());
 }
 
 void Level::draw() {
@@ -95,7 +130,8 @@ void Level::draw() {
 	window.draw(*layerZero);
 	window.draw(*bg);
 	window.draw(*playerTop);
-	//window.draw(*playerBottom);
+	world.DrawDebugData();
+	window.draw(*playerBottom);
 }
 
 b2PolygonShape Level::createShape(const tmx::Object& obj) {
