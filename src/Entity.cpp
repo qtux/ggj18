@@ -2,7 +2,8 @@
 
 #include "../Settings.hpp"
 
-Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<float> position, sf::Vector2<float> size, b2World& world) {
+Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<float> position,
+		sf::Vector2<float> size, b2World& world, float density, float friction) {
 	// load texture and create a shape
 	shape = sf::RectangleShape(size);
 	texture.loadFromFile(texture_file);
@@ -17,8 +18,8 @@ Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<f
 	b2PolygonShape b2shape;
 	b2shape.SetAsBox(size.x*.5f * scale * collider_scale, size.y*.5f * scale * collider_scale);
 	b2FixtureDef fixtureDef;
-	fixtureDef.density = 100.f;
-	fixtureDef.friction = 0.0f;
+	fixtureDef.density = density;
+	fixtureDef.friction = friction;
 	fixtureDef.shape = &b2shape;
 	
 	// create a body and add the fixture
