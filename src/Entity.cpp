@@ -11,10 +11,11 @@ Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<f
 	shape.setPosition(position);
 	
 	auto scale = Settings::instance()->getProperty<float>("box2d_scale");
+	float collider_scale = 0.7;	// hardcoded fix to enable a smaller collision box
 	
 	// create the shape with a fixture
 	b2PolygonShape b2shape;
-	b2shape.SetAsBox(size.x*.5f * scale, size.y*.5f * scale); // fixes offset w.r.t. ground
+	b2shape.SetAsBox(size.x*.5f * scale * collider_scale, size.y*.5f * scale * collider_scale);
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 100.f;
 	fixtureDef.friction = 0.0f;
@@ -32,7 +33,7 @@ Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<f
 void Entity::update(float dt) {
 	auto scale = Settings::instance()->getProperty<float>("box2d_scale");
 	auto body_position = body->GetPosition();
-	shape.setPosition(body_position.x / scale-128, body_position.y / scale-128);
+	shape.setPosition(body_position.x / scale - shape.getSize().x / 2, body_position.y / scale - shape.getSize().y / 2);
 }
 
 void Entity::draw(sf::RenderTarget& renderTarget, sf::RenderStates states) const {
