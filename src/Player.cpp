@@ -36,7 +36,12 @@ void Player::ActionTrigger(PlayerState myState){
 	{
 		case PlayerState::JUMPING:
 			std::cout<<"jump12345!"<<std::endl;
-			body->ApplyLinearImpulse(b2Vec2(0, Settings::instance()->getProperty<float>("jump_impulse")),body->GetWorldCenter(),true);
+			if (hasContact())
+			{
+				body->ApplyLinearImpulse(b2Vec2(0, Settings::instance()->getProperty<float>("jump_impulse")),body->GetWorldCenter(),true);
+				this->state = myState;
+				this->onGround = false;
+			}
 			break;
 		
 	}

@@ -31,21 +31,40 @@ Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<f
 	body->CreateFixture(&fixtureDef);
 }
 
-void Entity::update(float dt) {
-	auto scale = Settings::instance()->getProperty<float>("box2d_scale");
-	auto body_position = body->GetPosition();
-	shape.setPosition(body_position.x / scale - shape.getSize().x / 2, body_position.y / scale - shape.getSize().y / 2);
-	
+bool Entity::hasContact()
+{
 	// iterate over the Box2d body's contacts
   b2ContactEdge* edge = nullptr;
   for (edge = body->GetContactList(); edge; edge = edge->next)
   {
     if (!edge->contact->IsEnabled() || !edge->contact->IsTouching())
       continue;
-    
+   // std::cout<<"hasContact"<<std::endl;
     // get vector from the body's position to the contact's
      b2Vec2 v = edge->other->GetPosition() - body->GetPosition();
+     return true;
+     //if (!onGround)std::cout<<"hasContact "<<v.x << ","<<v.y<<std::endl;
+     /*if (fabs(v.x) > 20)
+     {
+		 std::cout<<"wallHit"<<std::endl;
+		 wallHit = true;
+	 }
+	 if (fabs(v.y) > 20)
+     {
+		 std::cout<<"onGround"<<std::endl;*/
+		 //onGround = true;
+	 //}
  }
+ return false;
+}
+
+
+void Entity::update(float dt) {
+	auto scale = Settings::instance()->getProperty<float>("box2d_scale");
+	auto body_position = body->GetPosition();
+	shape.setPosition(body_position.x / scale - shape.getSize().x / 2, body_position.y / scale - shape.getSize().y / 2);
+	
+	
     
 }
 
