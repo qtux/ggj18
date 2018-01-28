@@ -12,7 +12,15 @@ Run
 To run the project on Linux, you will need to install `SFML
 <https://www.sfml-dev.org/>`_, gcc/clang and cmake.
 
-Then ``git clone`` the project, create a build folder and do the following:
+Then ``git clone`` the project and apply the tmxlite patch:
+
+.. code-block:: shell
+
+	git clone https://github.com/qtux/ggj18.git
+	cd ggj18
+	git apply patch_tmxlite.diff
+
+Now you can compile and run the project:
 
 .. code-block:: shell
 
