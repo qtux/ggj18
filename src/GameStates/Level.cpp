@@ -63,17 +63,22 @@ Level::Level(sf::RenderWindow& window):
 			layer->getType() == tmx::Layer::Type::Object && layer->getName() == "Collision") {
 			auto collision_layer = *dynamic_cast<const tmx::ObjectGroup*>(layer.get());
 			for (auto& obj: collision_layer.getObjects()) {
+				bool isGoal = (obj.getName() == "goal");
 				// create the b2shape with a fixture
 				b2PolygonShape b2shape = createShape(obj);
 				b2FixtureDef fixtureDef;
 				fixtureDef.density = 1.f;
 				fixtureDef.friction = 0.7f;
 				fixtureDef.shape = &b2shape;
+				fixtureDef.isSensor = isGoal;
 				// create a body and add the fixture
 				b2BodyDef bodyDef;
 				bodyDef.type = b2_staticBody;
 				b2Body* body = world.CreateBody(&bodyDef);
 				body->CreateFixture(&fixtureDef);
+				if (isGoal) {
+					goalBody = body;
+				}
 			}
 			return;
 		}
@@ -213,8 +218,10 @@ void Level::logic(const sf::Time deltaT) {
 	playerTop->update(deltaT.asSeconds());
 	playerBottom->update(deltaT.asSeconds());
 
-	// die
-	if ((playerTop->hasContact().second && (isImmortal == 0 || isImmortal == 2)) || (playerBottom->hasContact().second && (isImmortal == 0 || isImmortal ==1))) {
+	// die or win
+	if (playerTop->hasWon() || playerBottom->hasWon()) {
+		nextState = std::unique_ptr<GameState>(new Level(window));
+	} else if ((playerTop->hasContact().second && (isImmortal == 0 || isImmortal == 2)) || (playerBottom->hasContact().second && (isImmortal == 0 || isImmortal ==1))) {
 		nextState = std::unique_ptr<GameState>(new Deathscreen(window));
 	}
 

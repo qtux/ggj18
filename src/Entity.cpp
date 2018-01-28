@@ -46,6 +46,7 @@ std::pair<bool,bool> Entity::hasContact() {
 		// std::cout<<"hasContact"<<std::endl;
 		// get vector from the body's position to the contact's
 		//b2Vec2 v = edge->other->GetPosition() - body->GetPosition();
+		
 		b2Vec2 norm = edge->contact->GetManifold()->localNormal;
 
 		//std::cout<<"collision #"<<ct<<": v.x = "<<v.x<<", v.y = "<<v.y<<std::endl; 
@@ -70,6 +71,21 @@ std::pair<bool,bool> Entity::hasContact() {
 	
 	return std::make_pair(onGround, isDead);
 	
+}
+
+bool Entity::hasWon() {
+	b2ContactEdge* edge = nullptr;
+	int ct = 0;
+	for (edge = body->GetContactList(); edge; edge = edge->next) {
+		if (!edge->contact->IsEnabled() || !edge->contact->IsTouching()) {
+			continue;
+		}
+		ct++;
+		if (edge->other->GetFixtureList()[0].IsSensor()) {
+			return true;
+		}
+	}
+	return false;
 }
 
 

@@ -33,4 +33,5 @@ private:
 	MapLayer* bg;
 	int isImmortal = 0;
 	sf::CircleShape skillJump, skillFly, skillSlide;
+	b2Body* goalBody;
 };

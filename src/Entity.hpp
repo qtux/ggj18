@@ -16,6 +16,7 @@ public:
 	sf::Vector2<float> getPos();
 	sf::Vector2<float> getSize();
 	void toggleShape();
+	bool hasWon();
 protected:
 	bool onGround = false;
 	bool wallHit = false;
