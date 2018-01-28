@@ -20,6 +20,9 @@ Level::Level(sf::RenderWindow& window):
 	luaL_loadfile(state, "assets/scripts/pcg.lua");
 	lua_pcall(state, 0, LUA_MULTRET, 0);
 
+	Settings::instance()->setProperty<int>("test_my_prop",123);
+	std::cout<<"test-setting: "<<Settings::instance()->getProperty<int>("test_my_prop")<<std::endl;
+
 	map.load(Settings::instance()->getProperty<std::string>("level_file"));
 	isImmortal = Settings::instance()->getProperty<int>("immortal");
 	//at global scope
