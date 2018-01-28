@@ -35,6 +35,7 @@ Level::Level(sf::RenderWindow& window):
 	playerTop = new Player(world, false, {100,100});
 	playerTop->ActionSwap(PlayerState::JUMPING);
 	playerTop->ActionSwap(PlayerState::FLYING);
+	playerTop->ActionSwap(PlayerState::SLIDING);
 	skillJump = sf::CircleShape(16);
 	skillJump.setPosition({100, 100});
 	skillJump.setFillColor({0, 255, 0, 100});
@@ -81,7 +82,7 @@ Level::~Level() {
 	delete playerTop;
 }
 
-static std::map<unsigned int, PlayerState> buttonLayout = {{0u,PlayerState::JUMPING},{1u,PlayerState::FLYING}};
+static std::map<unsigned int, PlayerState> buttonLayout = {{0u,PlayerState::JUMPING},{1u,PlayerState::FLYING},{2u,PlayerState::SLIDING}};
 
 void Level::processEvent(sf::Event& event) {
 	if (event.type == sf::Event::Closed) {
@@ -196,7 +197,7 @@ void Level::logic(const sf::Time deltaT) {
 	float diffTop = -40;
 	float diffBottom = -40;
 	if (playerTop->hasSkill(PlayerState::JUMPING)) {
-		std::cout<<playerTop->getPos().x << std::endl;
+		//std::cout<<playerTop->getPos().x << std::endl;
 		skillJump.setPosition(playerTop->getPos() + sf::Vector2f(playerTop->getSize().x / 2 + diffTop, 0));
 		diffTop += 40;
 	} else if (playerBottom->hasSkill(PlayerState::JUMPING)) {

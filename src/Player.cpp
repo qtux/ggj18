@@ -55,6 +55,7 @@ void Player::ActionTrigger(PlayerState myState){
 			}
 			break;
 		case PlayerState::SLIDING:
+		std::cout<<"ducking"<<std::endl;
 			if (hasSkill(PlayerState::SLIDING))
 			{
 				if (ducked) 
@@ -127,6 +128,7 @@ void Player::update(float dt) {
 				standUp();
 				state = PlayerState::NONE;
 			}
+			std::cout<<"SLIDING!!!!"<<std::endl;
 			this->setTextureRect(sf::IntRect(animationMap[state].first[animationIndex]*64, 2*64, 64, 64));
 			break;
 		case PlayerState::FLYING:
