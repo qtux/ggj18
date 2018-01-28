@@ -193,16 +193,22 @@ void Level::logic(const sf::Time deltaT) {
 	if ((playerTop->hasContact().second && (isImmortal == 0 || isImmortal == 2)) || (playerBottom->hasContact().second && (isImmortal == 0 || isImmortal ==1))) nextState = std::unique_ptr<GameState>(new Level(window));;
 
 	// skill following the correct player
+	float diffTop = -40;
+	float diffBottom = -40;
 	if (playerTop->hasSkill(PlayerState::JUMPING)) {
 		std::cout<<playerTop->getPos().x << std::endl;
-		skillJump.setPosition(playerTop->getPos() + sf::Vector2f(playerTop->getSize().x / 2, 0));
+		skillJump.setPosition(playerTop->getPos() + sf::Vector2f(playerTop->getSize().x / 2 + diffTop, 0));
+		diffTop += 40;
 	} else if (playerBottom->hasSkill(PlayerState::JUMPING)) {
-		skillJump.setPosition(playerBottom->getPos() + sf::Vector2f(playerBottom->getSize().x / 2, 0));
+		skillJump.setPosition(playerBottom->getPos() + sf::Vector2f(playerBottom->getSize().x / 2  + diffBottom, 0));
+		diffBottom += 40;
 	}
 	if (playerTop->hasSkill(PlayerState::FLYING)) {
-		skillFly.setPosition(playerTop->getPos() + sf::Vector2f(playerTop->getSize().x / 2, 0));
+		skillFly.setPosition(playerTop->getPos() + sf::Vector2f(playerTop->getSize().x / 2  + diffTop, 0));
+		diffTop += 40;
 	} else if (playerBottom->hasSkill(PlayerState::FLYING)) {
-		skillFly.setPosition(playerBottom->getPos() + sf::Vector2f(playerBottom->getSize().x / 2, 0));
+		skillFly.setPosition(playerBottom->getPos() + sf::Vector2f(playerBottom->getSize().x / 2 + diffBottom, 0));
+		diffBottom += 40;
 	}
 }
 
