@@ -23,7 +23,7 @@ Level::Level(sf::RenderWindow& window, int levelNumber):
 	lua_pcall(state, 0, LUA_MULTRET, 0);
 	
 	std::string levelName = "assets/levels/level" + std::to_string(levelNumber) + ".tmx";
-	std::cout << levelName << std::endl;
+	//std::cout << levelName << std::endl;
 	map.load("assets/levels/level" + std::to_string(levelNumber) + ".tmx");
 	isImmortal = Settings::instance()->getProperty<int>("immortal");
 	//at global scope
@@ -107,7 +107,7 @@ void Level::processEvent(sf::Event& event) {
 		bool toggleSwitch = false;
 		unsigned int joystickId = event.joystickButton.joystickId;
 		unsigned int joystickButton = event.joystickButton.button;
-		std::cout<<"joystick id: "<<joystickId<<", button: "<<joystickButton<<std::endl;
+		//std::cout<<"joystick id: "<<joystickId<<", button: "<<joystickButton<<std::endl;
 		//if (sf::Joystick::isButtonPressed(joystickId, 5)) // RB button
 		if (sf::Joystick::getAxisPosition(joystickId, sf::Joystick::R)>60.) {
 			toggleSwitch = true;
@@ -202,13 +202,13 @@ void Level::processEvent(sf::Event& event) {
 		}
 	}
 	
-	if (event.type == sf::Event::JoystickMoved) {
+	/*if (event.type == sf::Event::JoystickMoved) {
 		if (event.joystickMove.axis == sf::Joystick::Axis::R) {
 			std::cout << "axis moved: " <<event.joystickMove.axis<< std::endl;
 			std::cout << "joystick id: " << event.joystickMove.joystickId << std::endl;
 			std::cout << "new position: " << event.joystickMove.position << std::endl;
 		}
-	}
+	}*/
 }
 
 void Level::logic(const sf::Time deltaT) {

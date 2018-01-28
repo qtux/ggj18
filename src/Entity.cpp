@@ -115,7 +115,7 @@ sf::Vector2<float> Entity::getSize() {
 }
 
 void Entity::toggleShape() {
-	std::cout << "toggle" << std::endl;
+	//std::cout << "toggle" << std::endl;
 	b2PolygonShape* b2shape = dynamic_cast<b2PolygonShape*>(body->GetFixtureList()[0].GetShape());
 	
 	//float collider_scale;

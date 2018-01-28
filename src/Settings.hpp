@@ -40,7 +40,7 @@ class Settings : public Singleton <Settings>
 	protected:
 		Settings () { 
 				lua.script_file("assets/scripts/config.lua");
-				std::cout << lua.get<std::string>("name") << std::endl;
+				//std::cout << lua.get<std::string>("name") << std::endl;
 			}
 	
 	private:
