@@ -35,14 +35,21 @@ bool Entity::hasContact()
 {
 	// iterate over the Box2d body's contacts
   b2ContactEdge* edge = nullptr;
+  int ct = 0;
   for (edge = body->GetContactList(); edge; edge = edge->next)
   {
     if (!edge->contact->IsEnabled() || !edge->contact->IsTouching())
       continue;
+    ct++;
    // std::cout<<"hasContact"<<std::endl;
     // get vector from the body's position to the contact's
      b2Vec2 v = edge->other->GetPosition() - body->GetPosition();
-     return true;
+     b2Vec2 norm = edge->contact->GetManifold()->localNormal;
+     
+     //std::cout<<"collision #"<<ct<<": v.x = "<<v.x<<", v.y = "<<v.y<<std::endl; 
+     //std::cout<<"collision #"<<ct<<": norm.x = "<<norm.x<<", norm.y = "<<norm.y<<std::endl; 
+     if (fabs(norm.x) > .1)
+     std::cout<<"dead"<<std::endl;
      //if (!onGround)std::cout<<"hasContact "<<v.x << ","<<v.y<<std::endl;
      /*if (fabs(v.x) > 20)
      {
@@ -55,6 +62,7 @@ bool Entity::hasContact()
 		 //onGround = true;
 	 //}
  }
+ if (ct>0) return true;
  return false;
 }
 

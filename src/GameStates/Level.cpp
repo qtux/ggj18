@@ -136,6 +136,7 @@ void Level::logic(const sf::Time deltaT) {
 	);
 	playerTop->update(deltaT.asSeconds());
 	playerBottom->update(deltaT.asSeconds());
+	playerTop->hasContact();
 }
 
 void Level::draw() {

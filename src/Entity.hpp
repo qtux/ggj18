@@ -11,6 +11,8 @@ public:
 		sf::Vector2<float> size, b2World& world, float density, float friction);
 	void update(float dt = -1.);
 	void setTextureRect(sf::IntRect rect);
+	
+	bool hasContact();
 protected:
 	bool onGround = false;
 	bool wallHit = false;
@@ -21,5 +23,5 @@ protected:
 	void draw(sf::RenderTarget& rt, sf::RenderStates states) const override;
 	b2Body* body;
 	
-	bool hasContact();
+	
 };
