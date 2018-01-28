@@ -27,8 +27,8 @@ Level::Level(sf::RenderWindow& window):
 	debug_render_window = &window;
 	layerZero = new MapLayer(map, 0);
 	bg = new MapLayer(map, 1);
-	playerTop = new Player(world, {100,100});
-	playerBottom = new Player(world,{100,800});
+	playerTop = new Player(world, false, {100,100});
+	playerBottom = new Player(world, true, {100,800});
 	myView.setSize(
 		Settings::instance()->getProperty<float>("view_width"),
 		Settings::instance()->getProperty<float>("view_height")

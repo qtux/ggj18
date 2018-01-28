@@ -11,7 +11,7 @@ std::map<PlayerState, std::pair<std::vector<int>, std::vector<float>>> Player::a
    {PlayerState::JUMPING, {{0, 1, 2, 3, 4, 3},{baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2}}}
 };
 
-Player::Player(b2World& world, sf::Vector2<float> position):
+Player::Player(b2World& world, bool color, sf::Vector2<float> position):
 	Entity("assets/sprites/dodo.png",
 		sf::IntRect(0, 0, 64, 64),
 		position,
@@ -24,7 +24,9 @@ Player::Player(b2World& world, sf::Vector2<float> position):
 	state = PlayerState::NONE;
 	animationIndex = 0;
 	animationCounter = 0;
-
+	if (color) {
+		shape.setFillColor(sf::Color(164, 116, 74));
+	}
 }
 
 void Player::ActionSwap(PlayerState myState){}
