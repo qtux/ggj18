@@ -12,7 +12,7 @@ Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<f
 	shape.setPosition(position);
 	
 	auto scale = Settings::instance()->getProperty<float>("box2d_scale");
-	float collider_scale = 0.7;	// hardcoded fix to enable a smaller collision box
+	float collider_scale = 0.68;	// hardcoded fix to enable a smaller collision box
 	
 	// create the shape with a fixture
 	b2PolygonShape b2shape;
