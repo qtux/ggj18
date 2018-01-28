@@ -18,7 +18,7 @@ private:
 	int animationIndex;
 	int animationCounter;
 public:
-	Player(b2World& world, sf::Vector2<float> position  = {100, 100});
+	Player(b2World& world, bool color, sf::Vector2<float> position  = {100, 100});
 	void ActionTrigger(PlayerState triggeredAction);
 	void ActionSwap(PlayerState swappedAction);
 	void update(float dt=-1.);
