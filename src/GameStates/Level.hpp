@@ -10,7 +10,7 @@
 // engine
 #include "../GameState.hpp"
 #include "../Player.hpp"
-#include "../MapLayer.hpp"
+#include "SFMLOrthogonalLayer.hpp"
 #include "Deathscreen.hpp"
 #include "Outro.hpp"
 

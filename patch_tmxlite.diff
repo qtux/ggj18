@@ -1,0 +1,13 @@
+diff --git a/SFMLExample/src/SFMLOrthogonalLayer.hpp b/SFMLExample/src/SFMLOrthogonalLayer.hpp
+index 7ee7284..a7ab0b4 100644
+--- a/tmxlite/SFMLExample/src/SFMLOrthogonalLayer.hpp
++++ b/tmxlite/SFMLExample/src/SFMLOrthogonalLayer.hpp
+@@ -92,7 +92,7 @@ public:
+ 
+ private:
+ 
+-    sf::Vector2f m_chunkSize = sf::Vector2f(1024.f, 1024.f);
++    sf::Vector2f m_chunkSize = sf::Vector2f(200*64, 20*64);
+     sf::Vector2u m_chunkCount;
+     sf::FloatRect m_globalBounds;
+ 
