@@ -11,11 +11,20 @@ std::map<PlayerState, std::pair<std::vector<int>, std::vector<float>>> Player::a
    {PlayerState::JUMPING, {{0, 1, 2, 3, 4, 3},{baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2}}}
 };
 
-Player::Player(b2World& world, sf::Vector2<float> position): Entity("assets/sprites/dodo.png", sf::IntRect(0, 0, 64, 64), position, {64*scaleFactor, 64*scaleFactor}, world) {
+Player::Player(b2World& world, sf::Vector2<float> position):
+	Entity("assets/sprites/dodo.png",
+		sf::IntRect(0, 0, 64, 64),
+		position,
+		{64*scaleFactor, 64*scaleFactor},
+		world,
+		Settings::instance()->getProperty<float>("player_density"),
+		Settings::instance()->getProperty<float>("player_friction")
+	)
+{
 	state = PlayerState::NONE;
 	animationIndex = 0;
 	animationCounter = 0;
-	//body->SetLinearVelocity( b2Vec2(Settings::instance()->getProperty<float>("level_speed"),0));
+
 }
 
 void Player::ActionSwap(PlayerState myState){}
@@ -24,12 +33,8 @@ void Player::ActionTrigger(PlayerState myState){
 	switch(myState)
 	{
 		case PlayerState::JUMPING:
-		std::cout<<"jump12345!"<<std::endl;
-			//body->ApplyLinearImpulse(b2Vec2(+40000,-10000),body->GetWorldCenter(),true); //
-			//body->ApplyLinearImpulse(b2Vec2(0,-100),body->GetWorldCenter(),true);
-			float v_x = body->GetLinearVelocity().x;
-			body->SetLinearVelocity( b2Vec2(v_x,-10));
-			//body->SetPosition(b2Vec2(0,0));
+			std::cout<<"jump12345!"<<std::endl;
+			body->ApplyLinearImpulse(b2Vec2(0, Settings::instance()->getProperty<float>("jump_impulse")),body->GetWorldCenter(),true);
 			break;
 		
 	}
