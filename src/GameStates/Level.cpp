@@ -167,6 +167,22 @@ void Level::processEvent(sf::Event& event) {
 					playerTop->ActionTrigger(PlayerState::FLYING);
 				}
 			}
+			if (event.key.code == sf::Keyboard::A) {
+				if (toggleSwitch) {
+					playerTop->ActionSwap(PlayerState::SLIDING);
+					playerBottom->ActionSwap(PlayerState::SLIDING);
+				} else {
+					playerBottom->ActionTrigger(PlayerState::SLIDING);
+				}
+			}
+			if (event.key.code == sf::Keyboard::J) {
+				if (toggleSwitch) {
+					playerTop->ActionSwap(PlayerState::SLIDING);
+					playerBottom->ActionSwap(PlayerState::SLIDING);
+				} else {
+					playerTop->ActionTrigger(PlayerState::SLIDING);
+				}
+			}
 		}
 		if (event.key.code == sf::Keyboard::Escape) {
 			window.close();

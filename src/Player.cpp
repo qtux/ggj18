@@ -6,7 +6,7 @@
 std::map<PlayerState, std::pair<std::vector<int>, std::vector<float>>> Player::animationMap = {
    {PlayerState::NONE, {{3, 1, 3, 2, 3},{baseSpeed/2, baseSpeed, baseSpeed, baseSpeed, baseSpeed/2}}},
    {PlayerState::SHOOTING, {{3, 1, 3, 2, 3},{baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2}}},
-   {PlayerState::SLIDING, {{0, 1, 2},{baseSpeed*2, baseSpeed*3, baseSpeed*2}}},
+   {PlayerState::SLIDING, {{1},{baseSpeed*2, baseSpeed*3, baseSpeed*2}}},
    {PlayerState::FLYING, {{0, 1, 2, 1, 2, 1, 2, 3},{baseSpeed*2, baseSpeed*3, baseSpeed*3, baseSpeed*3, baseSpeed*3, baseSpeed*3, baseSpeed*3, baseSpeed*2}}},
    {PlayerState::JUMPING, {{0, 1, 2, 3, 4, 3},{baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2}}}
 };
