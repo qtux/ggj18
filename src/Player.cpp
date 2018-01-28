@@ -11,7 +11,7 @@ std::map<PlayerState, std::pair<std::vector<int>, std::vector<float>>> Player::a
    {PlayerState::JUMPING, {{0, 1, 2, 3, 4, 3},{baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2, baseSpeed*2}}}
 };
 
-Player::Player(b2World& world): Entity("assets/sprites/dodo.png", sf::IntRect(0, 0, 64, 64), {100, 100}, {64*scaleFactor, 64*scaleFactor}, world) {
+Player::Player(b2World& world, sf::Vector2<float> position): Entity("assets/sprites/dodo.png", sf::IntRect(0, 0, 64, 64), position, {64*scaleFactor, 64*scaleFactor}, world) {
 	state = PlayerState::NONE;
 	animationIndex = 0;
 	animationCounter = 0;
