@@ -87,3 +87,11 @@ void Entity::draw(sf::RenderTarget& renderTarget, sf::RenderStates states) const
 void Entity::setTextureRect(sf::IntRect rect) {
 	shape.setTextureRect(rect);
 }
+
+sf::Vector2<float> Entity::getPos() {
+	return shape.getPosition();
+}
+
+sf::Vector2<float> Entity::getSize() {
+	return shape.getSize();
+}

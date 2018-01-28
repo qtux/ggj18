@@ -35,6 +35,16 @@ Level::Level(sf::RenderWindow& window):
 	playerTop = new Player(world, false, {100,100});
 	playerTop->ActionSwap(PlayerState::JUMPING);
 	playerTop->ActionSwap(PlayerState::FLYING);
+	skillJump = sf::CircleShape(16);
+	skillJump.setPosition({100, 100});
+	skillJump.setFillColor({0, 255, 0, 100});
+	skillJump.setOutlineColor({0,0,0,255});
+	skillJump.setOutlineThickness(4);
+	skillFly = sf::CircleShape(16);
+	skillFly.setPosition({100, 50});
+	skillFly.setFillColor({255, 0, 0, 100});
+	skillFly.setOutlineColor({0,0,0,255});
+	skillFly.setOutlineThickness(4);
 	playerBottom = new Player(world, true, {100,800});
 	myView.setSize(
 		Settings::instance()->getProperty<float>("view_width"),
@@ -140,7 +150,21 @@ void Level::logic(const sf::Time deltaT) {
 	);
 	playerTop->update(deltaT.asSeconds());
 	playerBottom->update(deltaT.asSeconds());
+
 	if (playerTop->hasContact().second || playerBottom->hasContact().second) nextState = std::unique_ptr<GameState>(new Level(window));;
+
+	// skill following the correct player
+	if (playerTop->hasSkill(PlayerState::JUMPING)) {
+		std::cout<<playerTop->getPos().x << std::endl;
+		skillJump.setPosition(playerTop->getPos() + sf::Vector2f(playerTop->getSize().x / 2, 0));
+	} else if (playerBottom->hasSkill(PlayerState::JUMPING)) {
+		skillJump.setPosition(playerBottom->getPos() + sf::Vector2f(playerBottom->getSize().x / 2, 0));
+	}
+	if (playerTop->hasSkill(PlayerState::FLYING)) {
+		skillFly.setPosition(playerTop->getPos() + sf::Vector2f(playerTop->getSize().x / 2, 0));
+	} else if (playerBottom->hasSkill(PlayerState::FLYING)) {
+		skillFly.setPosition(playerBottom->getPos() + sf::Vector2f(playerBottom->getSize().x / 2, 0));
+	}
 }
 
 void Level::draw() {
@@ -150,6 +174,8 @@ void Level::draw() {
 	window.draw(*playerTop);
 	world.DrawDebugData();
 	window.draw(*playerBottom);
+	window.draw(skillJump);
+	window.draw(skillFly);
 }
 
 b2PolygonShape Level::createShape(const tmx::Object& obj) {
