@@ -60,7 +60,7 @@ function filter(heightIndex, widthIndex)
 		return 1
 	end
 	-- get a probability for a tile
-	return probability(1/((heightIndex+1) % 10))
+	return probability(1/(heightIndex % 10))
 end
 
 local levelArray = {}
