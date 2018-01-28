@@ -48,7 +48,7 @@ std::pair<bool,bool> Entity::hasContact() {
 
 		//std::cout<<"collision #"<<ct<<": v.x = "<<v.x<<", v.y = "<<v.y<<std::endl; 
 		//std::cout<<"collision #"<<ct<<": norm.x = "<<norm.x<<", norm.y = "<<norm.y<<std::endl; 
-		if (fabs(norm.x) > .1) {
+		if ((norm.x) > .1) {
 			isDead = true;
 		}
 		else
