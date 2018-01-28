@@ -104,13 +104,40 @@ void Level::processEvent(sf::Event& event) {
 		}
 	}
 	
-	if (event.type == sf::Event::KeyPressed)
-	{
-		if (event.key.code == sf::Keyboard::A)
-		{
-			if (useKeyboard)
-			{
-				playerBottom->ActionTrigger(PlayerState::JUMPING);
+	if (event.type == sf::Event::KeyPressed) {
+		if (useKeyboard) {
+			bool toggleSwitch = event.key.shift;
+			if (event.key.code == sf::Keyboard::S) {
+				if (toggleSwitch) {
+					playerTop->ActionSwap(PlayerState::JUMPING);
+					playerBottom->ActionSwap(PlayerState::JUMPING);
+				} else {
+					playerBottom->ActionTrigger(PlayerState::JUMPING);
+				}
+			}
+			if (event.key.code == sf::Keyboard::K) {
+				if (toggleSwitch) {
+					playerTop->ActionSwap(PlayerState::JUMPING);
+					playerBottom->ActionSwap(PlayerState::JUMPING);
+				} else {
+					playerTop->ActionTrigger(PlayerState::JUMPING);
+				}
+			}
+			if (event.key.code == sf::Keyboard::W) {
+				if (toggleSwitch) {
+					playerTop->ActionSwap(PlayerState::FLYING);
+					playerBottom->ActionSwap(PlayerState::FLYING);
+				} else {
+					playerBottom->ActionTrigger(PlayerState::FLYING);
+				}
+			}
+			if (event.key.code == sf::Keyboard::I) {
+				if (toggleSwitch) {
+					playerTop->ActionSwap(PlayerState::FLYING);
+					playerBottom->ActionSwap(PlayerState::FLYING);
+				} else {
+					playerTop->ActionTrigger(PlayerState::FLYING);
+				}
 			}
 		}
 		if (event.key.code == sf::Keyboard::Escape) {
