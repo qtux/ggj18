@@ -12,3 +12,4 @@ aspect_ratio = screen_width/screen_height
 view_width = aspect_ratio * 20 * 64
 view_height = 20 * 64
 level_speed = 0.5
+level_file = "assets/levels/level0.tmx"

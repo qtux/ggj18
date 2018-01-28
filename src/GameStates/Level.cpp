@@ -15,7 +15,7 @@ Level::Level(sf::RenderWindow& window):
 	world(b2World(gravity)),
 	map()
 {
-	map.load("assets/levels/level0.tmx");
+	map.load(Settings::instance()->getProperty<float>("level_file"));
 	//at global scope
 	b2Draw *fooDrawInstance = new FooDraw();
 
