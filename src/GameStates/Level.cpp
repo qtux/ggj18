@@ -79,7 +79,7 @@ void Level::processEvent(sf::Event& event) {
 			toggleSwitch = true;
 		}
 		if (joystickId == 0) {
-			if (toggleSwitch) {
+			if (toggleSwitch && playerTop->hasSkill(PlayerState::JUMPING)) {
 				playerTop->ActionSwap(PlayerState::JUMPING);
 				playerBottom->ActionSwap(PlayerState::JUMPING);
 			} else {
@@ -87,7 +87,7 @@ void Level::processEvent(sf::Event& event) {
 			}
 		}
 		if (joystickId == 1) {
-			if (toggleSwitch) {
+			if (toggleSwitch && playerBottom->hasSkill(PlayerState::JUMPING)) {
 				playerTop->ActionSwap(PlayerState::JUMPING);
 				playerBottom->ActionSwap(PlayerState::JUMPING);
 			} else {

@@ -58,6 +58,12 @@ void Player::duck()
 
 }
 
+bool Player::hasSkill(PlayerState checkSTate)
+{
+	return mySkills[checkSTate];
+}
+
+
 void Player::standUp(){};
 
 
