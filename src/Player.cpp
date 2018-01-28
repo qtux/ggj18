@@ -38,7 +38,6 @@ void Player::ActionTrigger(PlayerState myState){
 	switch(myState)
 	{
 		case PlayerState::JUMPING:
-			std::cout<<"jump12345!"<<std::endl;
 			if (mySkills[PlayerState::JUMPING] &&  hasContact())
 			{
 				body->ApplyLinearImpulse(b2Vec2(0, Settings::instance()->getProperty<float>("jump_impulse")),body->GetWorldCenter(),true);
@@ -47,7 +46,13 @@ void Player::ActionTrigger(PlayerState myState){
 				//this->onGround = false;
 			}
 			break;
-		
+		case PlayerState::FLYING:
+			if (hasSkill(PlayerState::FLYING))
+			{
+				body->SetGravityScale( Settings::instance()->getProperty<float>("flying_gravity_scale") );
+				this->state = myState;
+				timePassed = 0;
+			}
 	}
 }
 
@@ -96,6 +101,13 @@ void Player::update(float dt) {
 			break;
 		case PlayerState::FLYING:
 			this->setTextureRect(sf::IntRect(animationMap[state].first[animationIndex]*64, 3*64, 64, 64));
+			std::cout<<"flyings"<<std::endl;
+			if (hasContact() && timePassed > .2)
+			{
+				state = PlayerState::NONE;
+				body->SetGravityScale(1);
+				std::cout<<"fullgrav"<<std::endl;
+			}
 			break;
 		case PlayerState::JUMPING:
 			this->setTextureRect(sf::IntRect(animationMap[state].first[animationIndex]*64, 4*64, 64, 64));
