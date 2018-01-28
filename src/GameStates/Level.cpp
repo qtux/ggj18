@@ -21,6 +21,7 @@ Level::Level(sf::RenderWindow& window):
 	lua_pcall(state, 0, LUA_MULTRET, 0);
 
 	map.load(Settings::instance()->getProperty<std::string>("level_file"));
+	isImmortal = Settings::instance()->getProperty<int>("immortal");
 	//at global scope
 	b2Draw *fooDrawInstance = new FooDraw();
 

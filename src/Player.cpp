@@ -149,5 +149,6 @@ void Player::update(float dt) {
 			}
 			break;
 	}
+	if (ducked && state != PlayerState::SLIDING) standUp();
 	++animationCounter;
 }
