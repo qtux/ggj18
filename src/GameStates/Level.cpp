@@ -224,7 +224,11 @@ void Level::logic(const sf::Time deltaT) {
 
 	// die or win
 	if (playerTop->hasWon() || playerBottom->hasWon()) {
-		nextState = std::unique_ptr<GameState>(new Level(window, ++levelNumber));
+		if (levelNumber < 7) {
+			nextState = std::unique_ptr<GameState>(new Level(window, ++levelNumber));
+		} else {
+			nextState = std::unique_ptr<GameState>(new Outro(window));
+		}
 	} else if ((playerTop->hasContact().second && (isImmortal == 0 || isImmortal == 2)) || (playerBottom->hasContact().second && (isImmortal == 0 || isImmortal ==1))) {
 		nextState = std::unique_ptr<GameState>(new Deathscreen(window, levelNumber));
 	}

@@ -1,8 +1,6 @@
 #include "Deathscreen.hpp"
 #include "Level.hpp"
 
-#include <iostream>
-
 Deathscreen::Deathscreen(sf::RenderWindow& window, int levelNumber):	GameState(window), levelNumber(levelNumber) {
 	imgs = {"assets/death/human.png", "assets/death/human.png", "assets/death/death.png"};
 	index = 0;
@@ -28,7 +26,6 @@ void Deathscreen::logic(const sf::Time deltaT) {
 }
 
 void Deathscreen::draw() {
-	std::cout << img.getSize().x << std::endl;
 	sf::Sprite sprite(img);
 	window.setView(myView);
 	window.draw(sprite);
