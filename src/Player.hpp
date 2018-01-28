@@ -14,6 +14,7 @@ enum class PlayerState{
 class Player: public Entity {
 private:
 	PlayerState state;
+	float timePassed = 0;
 	static std::map<PlayerState, std::pair<std::vector<int>, std::vector<float>>> animationMap;
 	int animationIndex;
 	int animationCounter;

@@ -38,7 +38,8 @@ void Player::ActionTrigger(PlayerState myState){
 			{
 				body->ApplyLinearImpulse(b2Vec2(0, Settings::instance()->getProperty<float>("jump_impulse")),body->GetWorldCenter(),true);
 				this->state = myState;
-				this->onGround = false;
+				timePassed = 0;
+				//this->onGround = false;
 			}
 			break;
 		
@@ -49,13 +50,16 @@ Player::~Player(){}
 
 void Player::update(float dt) {
 	Entity::update(dt);
+	timePassed +=dt;
 	// change animation after delaying it by the value given by a counter
 	if (animationCounter >= animationMap[state].second[animationIndex] * dt) {
 		++animationIndex;
 		animationCounter = 0;
 		if (animationIndex >= animationMap[state].first.size()) {
 			animationIndex = 0;
-			state = PlayerState::NONE;
+			
+			//std::cout<<"never gonna give you up"<<std::endl;
+			//state = PlayerState::NONE;
 		}
 	}
 	float v_y = body->GetLinearVelocity().y;
@@ -76,6 +80,10 @@ void Player::update(float dt) {
 			break;
 		case PlayerState::JUMPING:
 			this->setTextureRect(sf::IntRect(animationMap[state].first[animationIndex]*64, 4*64, 64, 64));
+			if (hasContact() && timePassed > .2)
+			{
+				state = PlayerState::NONE;
+			}
 			break;
 	}
 	++animationCounter;
