@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Deathscreen::Deathscreen(sf::RenderWindow& window):	GameState(window) {
+Deathscreen::Deathscreen(sf::RenderWindow& window, int levelNumber):	GameState(window), levelNumber(levelNumber) {
 	imgs = {"assets/death/human.png", "assets/death/human.png", "assets/death/death.png"};
 	index = 0;
 	myView = window.getDefaultView();
@@ -19,7 +19,7 @@ void Deathscreen::processEvent(sf::Event& event) {
 
 void Deathscreen::logic(const sf::Time deltaT) {
 	if (index >= imgs.size() || img.loadFromFile(imgs[index]) != true) {
-		nextState = std::unique_ptr<GameState> (new Level(window));
+		nextState = std::unique_ptr<GameState> (new Level(window, levelNumber));
 		return;
 	}
 	myView.setSize(img.getSize().x, img.getSize().y);

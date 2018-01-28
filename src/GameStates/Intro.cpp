@@ -26,7 +26,7 @@ void Intro::processEvent(sf::Event& event) {
 void Intro::logic(const sf::Time deltaT) {
 	// functions
 	if (switched && (i >= 2 || img.loadFromFile("assets/intro/intro_" + std::to_string(i) + ".png") != true)) {
-		nextState = std::unique_ptr<GameState> (new Level(window));
+		nextState = std::unique_ptr<GameState> (new Level(window, 0));
 		return;
 	}
 	if (switched) {

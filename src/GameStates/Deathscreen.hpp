@@ -6,7 +6,7 @@
 
 class Deathscreen: public GameState {
 public:
-	Deathscreen(sf::RenderWindow& window);
+	Deathscreen(sf::RenderWindow& window, int levelNumber);
 private:
 	void processEvent(sf::Event& event) override;
 	void logic(const sf::Time deltaT) override;
@@ -15,4 +15,5 @@ private:
 	int index;
 	std::vector<std::string> imgs;
 	sf::View myView;
+	int levelNumber;
 };

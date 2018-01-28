@@ -15,7 +15,7 @@
 
 class Level: public GameState {
 public:
-	Level(sf::RenderWindow& window);
+	Level(sf::RenderWindow& window, int levelNumber);
 	~Level();
 private:
 	void processEvent(sf::Event& event) override;
@@ -34,4 +34,5 @@ private:
 	int isImmortal = 0;
 	sf::CircleShape skillJump, skillFly, skillSlide;
 	b2Body* goalBody;
+	int levelNumber;
 };

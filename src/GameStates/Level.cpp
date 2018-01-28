@@ -6,21 +6,25 @@
 
 #include <iostream>
 #include <memory>
+#include <string>
 
 #include "Box2DDebugDrawer.hpp"
 
-Level::Level(sf::RenderWindow& window):
+Level::Level(sf::RenderWindow& window, int levelNumber):
 	GameState(window),
 	useKeyboard(!sf::Joystick::isConnected(1)),
 	gravity(b2Vec2(0.f, Settings::instance()->getProperty<float>("gravity"))),
 	world(b2World(gravity)),
-	map()
+	map(),
+	levelNumber(levelNumber)
 {
 	lua_State *state = luaL_newstate();
 	luaL_loadfile(state, "assets/scripts/pcg.lua");
 	lua_pcall(state, 0, LUA_MULTRET, 0);
-
-	map.load(Settings::instance()->getProperty<std::string>("level_file"));
+	
+	std::string levelName = "assets/levels/level" + std::to_string(levelNumber) + ".tmx";
+	std::cout << levelName << std::endl;
+	map.load("assets/levels/level" + std::to_string(levelNumber) + ".tmx");
 	isImmortal = Settings::instance()->getProperty<int>("immortal");
 	//at global scope
 	b2Draw *fooDrawInstance = new FooDraw();
@@ -194,7 +198,7 @@ void Level::processEvent(sf::Event& event) {
 			window.close();
 		}
 		if (event.key.code == sf::Keyboard::R) {
-			nextState = std::unique_ptr<GameState>(new Level(window));
+			nextState = std::unique_ptr<GameState>(new Level(window, levelNumber));
 		}
 	}
 	
@@ -220,9 +224,9 @@ void Level::logic(const sf::Time deltaT) {
 
 	// die or win
 	if (playerTop->hasWon() || playerBottom->hasWon()) {
-		nextState = std::unique_ptr<GameState>(new Level(window));
+		nextState = std::unique_ptr<GameState>(new Level(window, ++levelNumber));
 	} else if ((playerTop->hasContact().second && (isImmortal == 0 || isImmortal == 2)) || (playerBottom->hasContact().second && (isImmortal == 0 || isImmortal ==1))) {
-		nextState = std::unique_ptr<GameState>(new Deathscreen(window));
+		nextState = std::unique_ptr<GameState>(new Deathscreen(window, levelNumber));
 	}
 
 	// skill following the correct player
