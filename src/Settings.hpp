@@ -36,6 +36,7 @@ class Settings : public Singleton <Settings>
 	public:
 		~Settings () { }
 		template <typename T> T getProperty(std::string propName){return lua.get<T>(propName);}
+		template <typename T> void setProperty(std::string propName, T value){ lua.script(propName + " = " + value.toString());}
 	protected:
 		Settings () { 
 				lua.script_file("assets/scripts/config.lua");
