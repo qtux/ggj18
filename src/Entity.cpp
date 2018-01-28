@@ -34,6 +34,18 @@ void Entity::update(float dt) {
 	auto scale = Settings::instance()->getProperty<float>("box2d_scale");
 	auto body_position = body->GetPosition();
 	shape.setPosition(body_position.x / scale - shape.getSize().x / 2, body_position.y / scale - shape.getSize().y / 2);
+	
+	// iterate over the Box2d body's contacts
+  b2ContactEdge* edge = nullptr;
+  for (edge = body->GetContactList(); edge; edge = edge->next)
+  {
+    if (!edge->contact->IsEnabled() || !edge->contact->IsTouching())
+      continue;
+    
+    // get vector from the body's position to the contact's
+     b2Vec2 v = edge->other->GetPosition() - body->GetPosition();
+ }
+    
 }
 
 void Entity::draw(sf::RenderTarget& renderTarget, sf::RenderStates states) const {
