@@ -38,7 +38,7 @@ void Player::ActionTrigger(PlayerState myState){
 	switch(myState)
 	{
 		case PlayerState::JUMPING:
-			if (mySkills[PlayerState::JUMPING] &&  hasContact())
+			if (mySkills[PlayerState::JUMPING] &&  hasContact().first)
 			{
 				body->ApplyLinearImpulse(b2Vec2(0, Settings::instance()->getProperty<float>("jump_impulse")),body->GetWorldCenter(),true);
 				this->state = myState;
@@ -102,7 +102,7 @@ void Player::update(float dt) {
 		case PlayerState::FLYING:
 			this->setTextureRect(sf::IntRect(animationMap[state].first[animationIndex]*64, 3*64, 64, 64));
 			std::cout<<"flyings"<<std::endl;
-			if (hasContact() && timePassed > .2)
+			if (hasContact().first && timePassed > .2)
 			{
 				state = PlayerState::NONE;
 				body->SetGravityScale(1);
@@ -111,7 +111,7 @@ void Player::update(float dt) {
 			break;
 		case PlayerState::JUMPING:
 			this->setTextureRect(sf::IntRect(animationMap[state].first[animationIndex]*64, 4*64, 64, 64));
-			if (hasContact() && timePassed > .2)
+			if (hasContact().first && timePassed > .2)
 			{
 				state = PlayerState::NONE;
 			}

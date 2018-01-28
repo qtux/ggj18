@@ -140,7 +140,7 @@ void Level::logic(const sf::Time deltaT) {
 	);
 	playerTop->update(deltaT.asSeconds());
 	playerBottom->update(deltaT.asSeconds());
-	playerTop->hasContact();
+	if (playerTop->hasContact().second || playerBottom->hasContact().second) nextState = std::unique_ptr<GameState>(new Level(window));;
 }
 
 void Level::draw() {
