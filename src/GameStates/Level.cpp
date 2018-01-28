@@ -11,7 +11,7 @@
 Level::Level(sf::RenderWindow& window):
 	GameState(window),
 	useKeyboard(!sf::Joystick::isConnected(1)),
-	gravity(b2Vec2(0.f, 9.8f)),
+	gravity(b2Vec2(0.f, Settings::instance()->getProperty<float>("gravity"))),
 	world(b2World(gravity)),
 	map()
 {
@@ -29,7 +29,10 @@ Level::Level(sf::RenderWindow& window):
 	bg = new MapLayer(map, 1);
 	playerTop = new Player(world, {100,100});
 	playerBottom = new Player(world,{100,800});
-	myView.setSize(1707,1280);
+	myView.setSize(
+		Settings::instance()->getProperty<float>("view_width"),
+		Settings::instance()->getProperty<float>("view_height")
+	);
 	
 	for (auto& layer:map.getLayers()) {
 		if (map.getOrientation() == tmx::Orientation::Orthogonal &&
@@ -96,7 +99,10 @@ void Level::logic(const sf::Time deltaT) {
 	world.Step(deltaT.asSeconds(), 8, 3);
 	auto scale = Settings::instance()->getProperty<float>("box2d_scale");
 	auto level_speed = Settings::instance()->getProperty<float>("level_speed");
-	myView.setCenter(myView.getCenter().x + level_speed * deltaT.asSeconds() / scale, 1280./2);
+	myView.setCenter(
+		myView.getCenter().x + level_speed * deltaT.asSeconds() / scale,
+		Settings::instance()->getProperty<float>("view_height") / 2
+	);
 	playerTop->update(deltaT.asSeconds());
 	playerBottom->update(deltaT.asSeconds());
 }
