@@ -6,6 +6,8 @@
 
 #include <iostream>
 
+#include "Box2DDebugDrawer.h"
+
 Level::Level(sf::RenderWindow& window):
 	GameState(window),
 	useKeyboard(!sf::Joystick::isConnected(1)),
@@ -14,6 +16,15 @@ Level::Level(sf::RenderWindow& window):
 	map()
 {
 	map.load("assets/levels/level0.tmx");
+	  //at global scope
+   b2Draw *fooDrawInstance = new FooDraw();
+  
+  //in constructor, usually
+  world.SetDebugDraw( fooDrawInstance );
+  
+  //somewhere appropriate
+  fooDrawInstance->SetFlags( b2Draw::e_shapeBit );
+  debug_render_window = &window;
 	layerZero = new MapLayer(map, 0);
 	bg = new MapLayer(map, 1);
 	playerTop = new Player(world);
@@ -95,6 +106,7 @@ void Level::draw() {
 	window.draw(*layerZero);
 	window.draw(*bg);
 	window.draw(*playerTop);
+	world.DrawDebugData();
 	//window.draw(*playerBottom);
 }
 

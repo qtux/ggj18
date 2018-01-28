@@ -14,7 +14,7 @@ Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<f
 	
 	// create the shape with a fixture
 	b2PolygonShape b2shape;
-	b2shape.SetAsBox(size.x * scale, size.y * scale); // fixes offset w.r.t. ground
+	b2shape.SetAsBox(size.x*.5f * scale, size.y*.5f * scale); // fixes offset w.r.t. ground
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 100.f;
 	fixtureDef.friction = 0.0f;
@@ -22,7 +22,7 @@ Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<f
 	
 	// create a body and add the fixture
 	b2BodyDef bodyDef;
-	bodyDef.position = b2Vec2(position.x * scale, position.y * scale);
+	bodyDef.position = b2Vec2((position.x) * scale, position.y * scale);
 	bodyDef.fixedRotation = true;
 	bodyDef.type = b2_dynamicBody;
 	body = world.CreateBody(&bodyDef);
@@ -32,7 +32,7 @@ Entity::Entity(std::string texture_file, sf::IntRect texture_rect, sf::Vector2<f
 void Entity::update(float dt) {
 	auto scale = Settings::instance()->getProperty<float>("box2d_scale");
 	auto body_position = body->GetPosition();
-	shape.setPosition(body_position.x / scale, body_position.y / scale + 38);
+	shape.setPosition(body_position.x / scale-128, body_position.y / scale-128);
 }
 
 void Entity::draw(sf::RenderTarget& renderTarget, sf::RenderStates states) const {
