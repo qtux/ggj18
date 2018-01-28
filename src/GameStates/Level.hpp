@@ -30,5 +30,6 @@ private:
 	sf::View myView;
 	MapLayer* layerZero;
 	MapLayer* bg;
+	bool isImmortal = false;
 	sf::CircleShape skillJump, skillFly;
 };

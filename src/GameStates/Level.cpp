@@ -116,6 +116,10 @@ void Level::processEvent(sf::Event& event) {
 	
 	if (event.type == sf::Event::KeyPressed)
 	{
+		if (event.key.code == sf::Keyboard::F4)
+		{
+			isImmortal = true;
+		}
 		if (event.key.code == sf::Keyboard::A)
 		{
 			if (useKeyboard)
@@ -151,7 +155,7 @@ void Level::logic(const sf::Time deltaT) {
 	playerTop->update(deltaT.asSeconds());
 	playerBottom->update(deltaT.asSeconds());
 
-	if (playerTop->hasContact().second || playerBottom->hasContact().second) nextState = std::unique_ptr<GameState>(new Level(window));;
+	if (!isImmortal && (playerTop->hasContact().second || playerBottom->hasContact().second)) nextState = std::unique_ptr<GameState>(new Level(window));;
 
 	// skill following the correct player
 	if (playerTop->hasSkill(PlayerState::JUMPING)) {
