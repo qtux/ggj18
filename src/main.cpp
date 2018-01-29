@@ -7,6 +7,8 @@
 #include "GameStates/Intro.hpp"
 
 int main() {
+	std::srand(std::time(nullptr));
+	
 	sf::RenderWindow window(
 		sf::VideoMode(Settings::instance()->getProperty<int>("screen_width"),
 		Settings::instance()->getProperty<int>("screen_height")),

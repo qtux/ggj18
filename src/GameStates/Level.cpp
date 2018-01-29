@@ -37,10 +37,15 @@ Level::Level(sf::RenderWindow& window, int levelNumber):
 	debug_render_window = &window;
 	layerZero = new MapLayer(map, 0);
 	bg = new MapLayer(map, 1);
+	
 	playerTop = new Player(world, false, {100,100});
-	playerTop->ActionSwap(PlayerState::JUMPING);
-	playerTop->ActionSwap(PlayerState::FLYING);
-	playerTop->ActionSwap(PlayerState::SLIDING);
+	playerBottom = new Player(world, true, {100,800});
+	std::vector<Player*> player = {playerTop, playerBottom};
+	std::vector<PlayerState> availableSkills = {PlayerState::JUMPING, PlayerState::FLYING, PlayerState::SLIDING};
+	for (int i=0; i < availableSkills.size(); ++i) {
+		player[std::rand() % 2]->ActionSwap(availableSkills[i]);
+	}
+	
 	skillJump = sf::CircleShape(16);
 	skillJump.setPosition({100, 100});
 	skillJump.setFillColor({0, 255, 0, 100});
@@ -56,7 +61,6 @@ Level::Level(sf::RenderWindow& window, int levelNumber):
 	skillSlide.setFillColor({0, 0, 255, 100});
 	skillSlide.setOutlineColor({0,0,0,255});
 	skillSlide.setOutlineThickness(4);
-	playerBottom = new Player(world, true, {100,800});
 	myView.setSize(
 		Settings::instance()->getProperty<float>("view_width"),
 		Settings::instance()->getProperty<float>("view_height")
