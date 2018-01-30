@@ -150,7 +150,7 @@ void Level::processEvent(sf::Event& event) {
 		if (useKeyboard) {
 			bool toggleSwitch = event.key.shift;
 			if (event.key.code == sf::Keyboard::S) {
-				if (toggleSwitch) {
+				if (toggleSwitch && playerTop->hasSkill(PlayerState::JUMPING)) {
 					playerTop->ActionSwap(PlayerState::JUMPING);
 					playerBottom->ActionSwap(PlayerState::JUMPING);
 				} else {
@@ -158,7 +158,7 @@ void Level::processEvent(sf::Event& event) {
 				}
 			}
 			if (event.key.code == sf::Keyboard::K) {
-				if (toggleSwitch) {
+				if (toggleSwitch && playerBottom->hasSkill(PlayerState::JUMPING)) {
 					playerTop->ActionSwap(PlayerState::JUMPING);
 					playerBottom->ActionSwap(PlayerState::JUMPING);
 				} else {
@@ -166,7 +166,7 @@ void Level::processEvent(sf::Event& event) {
 				}
 			}
 			if (event.key.code == sf::Keyboard::D) {
-				if (toggleSwitch) {
+				if (toggleSwitch && playerTop->hasSkill(PlayerState::FLYING)) {
 					playerTop->ActionSwap(PlayerState::FLYING);
 					playerBottom->ActionSwap(PlayerState::FLYING);
 				} else {
@@ -174,7 +174,7 @@ void Level::processEvent(sf::Event& event) {
 				}
 			}
 			if (event.key.code == sf::Keyboard::L) {
-				if (toggleSwitch) {
+				if (toggleSwitch && playerBottom->hasSkill(PlayerState::FLYING)) {
 					playerTop->ActionSwap(PlayerState::FLYING);
 					playerBottom->ActionSwap(PlayerState::FLYING);
 				} else {
@@ -182,7 +182,7 @@ void Level::processEvent(sf::Event& event) {
 				}
 			}
 			if (event.key.code == sf::Keyboard::A) {
-				if (toggleSwitch) {
+				if (toggleSwitch && playerTop->hasSkill(PlayerState::SLIDING)) {
 					playerTop->ActionSwap(PlayerState::SLIDING);
 					playerBottom->ActionSwap(PlayerState::SLIDING);
 				} else {
@@ -190,7 +190,7 @@ void Level::processEvent(sf::Event& event) {
 				}
 			}
 			if (event.key.code == sf::Keyboard::J) {
-				if (toggleSwitch) {
+				if (toggleSwitch && playerBottom->hasSkill(PlayerState::SLIDING)) {
 					playerTop->ActionSwap(PlayerState::SLIDING);
 					playerBottom->ActionSwap(PlayerState::SLIDING);
 				} else {
