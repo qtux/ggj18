@@ -165,7 +165,7 @@ void Level::processEvent(sf::Event& event) {
 					playerTop->ActionTrigger(PlayerState::JUMPING);
 				}
 			}
-			if (event.key.code == sf::Keyboard::W) {
+			if (event.key.code == sf::Keyboard::D) {
 				if (toggleSwitch) {
 					playerTop->ActionSwap(PlayerState::FLYING);
 					playerBottom->ActionSwap(PlayerState::FLYING);
@@ -173,7 +173,7 @@ void Level::processEvent(sf::Event& event) {
 					playerBottom->ActionTrigger(PlayerState::FLYING);
 				}
 			}
-			if (event.key.code == sf::Keyboard::I) {
+			if (event.key.code == sf::Keyboard::L) {
 				if (toggleSwitch) {
 					playerTop->ActionSwap(PlayerState::FLYING);
 					playerBottom->ActionSwap(PlayerState::FLYING);
