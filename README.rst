@@ -11,8 +11,8 @@ Run
 
 To run the project on Linux, you will need to install:
 
-- `SFML<https://www.sfml-dev.org/>`_ (version 2.3.2 or higher)
-- `Box2D<https://http://box2d.org/>`_ (version 2.3.1 or higher)
+- SFML (version 2.3.2 or higher, https://www.sfml-dev.org/)
+- Box2D (version 2.3.1 or higher, https://http://box2d.org/>)
 - Lua (version 5.1 or higher)
 - GCC or Clang (with C++14 support)
 - CMake (version 3.5 or higher)
