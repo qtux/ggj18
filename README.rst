@@ -9,8 +9,13 @@ Dodo(om)s Day is about prolonging the inevitable...
 Run
 ---
 
-To run the project on Linux, you will need to install `SFML
-<https://www.sfml-dev.org/>`_, gcc/clang and cmake.
+To run the project on Linux, you will need to install:
+
+- `SFML<https://www.sfml-dev.org/>`_ (version 2.3.2 or higher)
+- `Box2D<https://http://box2d.org/>`_ (version 2.3.1 or higher)
+- Lua (version 5.1 or higher)
+- GCC or Clang (with C++14 support)
+- CMake (version 3.5 or higher)
 
 Then ``git clone`` the project, get the submodules and apply the tmxlite
 patch:
