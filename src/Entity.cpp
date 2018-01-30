@@ -122,10 +122,10 @@ void Entity::toggleShape() {
 	float scale;
 	if (toggle) {
 		toggle = false;
-		scale = 0.5;
+		scale = 0.25;
 	} else {
 		toggle = true;
-		scale = 2;
+		scale = 4;
 	}
 	
 	/*for (int i = 0; i < b2shape->m_count; ++i) {
