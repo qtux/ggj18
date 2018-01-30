@@ -154,7 +154,7 @@ void Level::processEvent(sf::Event& event) {
 					playerTop->ActionSwap(PlayerState::JUMPING);
 					playerBottom->ActionSwap(PlayerState::JUMPING);
 				} else {
-					playerBottom->ActionTrigger(PlayerState::JUMPING);
+					playerTop->ActionTrigger(PlayerState::JUMPING);
 				}
 			}
 			if (event.key.code == sf::Keyboard::K) {
@@ -162,7 +162,7 @@ void Level::processEvent(sf::Event& event) {
 					playerTop->ActionSwap(PlayerState::JUMPING);
 					playerBottom->ActionSwap(PlayerState::JUMPING);
 				} else {
-					playerTop->ActionTrigger(PlayerState::JUMPING);
+					playerBottom->ActionTrigger(PlayerState::JUMPING);
 				}
 			}
 			if (event.key.code == sf::Keyboard::D) {
@@ -170,7 +170,7 @@ void Level::processEvent(sf::Event& event) {
 					playerTop->ActionSwap(PlayerState::FLYING);
 					playerBottom->ActionSwap(PlayerState::FLYING);
 				} else {
-					playerBottom->ActionTrigger(PlayerState::FLYING);
+					playerTop->ActionTrigger(PlayerState::FLYING);
 				}
 			}
 			if (event.key.code == sf::Keyboard::L) {
@@ -178,7 +178,7 @@ void Level::processEvent(sf::Event& event) {
 					playerTop->ActionSwap(PlayerState::FLYING);
 					playerBottom->ActionSwap(PlayerState::FLYING);
 				} else {
-					playerTop->ActionTrigger(PlayerState::FLYING);
+					playerBottom->ActionTrigger(PlayerState::FLYING);
 				}
 			}
 			if (event.key.code == sf::Keyboard::A) {
@@ -186,7 +186,7 @@ void Level::processEvent(sf::Event& event) {
 					playerTop->ActionSwap(PlayerState::SLIDING);
 					playerBottom->ActionSwap(PlayerState::SLIDING);
 				} else {
-					playerBottom->ActionTrigger(PlayerState::SLIDING);
+					playerTop->ActionTrigger(PlayerState::SLIDING);
 				}
 			}
 			if (event.key.code == sf::Keyboard::J) {
@@ -194,7 +194,7 @@ void Level::processEvent(sf::Event& event) {
 					playerTop->ActionSwap(PlayerState::SLIDING);
 					playerBottom->ActionSwap(PlayerState::SLIDING);
 				} else {
-					playerTop->ActionTrigger(PlayerState::SLIDING);
+					playerBottom->ActionTrigger(PlayerState::SLIDING);
 				}
 			}
 		}
